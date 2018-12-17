@@ -1,13 +1,10 @@
 {% block content %}
 {% if session['logged_in'] %}
     <h1>Welcome to {{username}}</h1>
-<p>
-    username: <b>{{ info.username }}</b>
-</p>
 
-    <p>
-    real name: <b>{{ info.real_name }}</b>
-</p>
+<p>username: <b>{{ info.username }}</b></p>
+    <p>real name: <b>{{ info.real_name }}</b></p>
+    <p>Last login: <b>{{ info.last_login_time }}</b></p>
 {% else %}
 not login
 {% endif %}

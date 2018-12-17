@@ -16,6 +16,15 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
+    password_confirm = PasswordField('Confirm Password', validators=[DataRequired()])
     real_name = StringField('Real Name', validators=[DataRequired()])
     tel = IntegerField('Telephone Number', validators=[DataRequired()])
     submit = SubmitField('Register')
+
+
+class UpdateForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    real_name = StringField('Real Name', validators=[DataRequired()])
+    tel = IntegerField('Telephone Number', validators=[DataRequired()])
+    submit = SubmitField('Update')

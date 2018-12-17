@@ -65,8 +65,10 @@ with conn:
                             foreign key (source_id) references user(id),
                             foreign key (dest_id) references user(id)
                         )''')
+    # password: admin
     cur.execute('''insert into user(username, pass_hash, real_name,tel,last_login_time,type)
     values (\'admin\', \'f6fdffe48c908deb0f4c3bd36c032e72\', \'管理员\',555,100, 1)''')
+    # password: xiaopc
     cur.execute('''insert into user(username, pass_hash, real_name,tel,last_login_time,type)
     values (\'xiaopc\', \'5aa8a6c678dbb5435d01f813c3dac7cc\', \'Xiaopc\',666,100, 0)''')
 
