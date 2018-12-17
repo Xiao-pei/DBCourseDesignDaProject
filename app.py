@@ -75,7 +75,7 @@ def login():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-    form = UpdateForm()
+    form = RegisterForm()
     if form.validate_on_submit():  # form提交并格式有效
         name, password, confirm = request.form["username"], request.form['password'], request.form['password_confirm']
         real_name, tel = request.form["real_name"], request.form['tel']
