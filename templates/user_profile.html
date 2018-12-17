@@ -1,0 +1,14 @@
+{% block content %}
+{% if session['logged_in'] %}
+    <h1>Welcome to {{username}}</h1>
+<p>
+    username: <b>{{ info.username }}</b>
+</p>
+
+    <p>
+    real name: <b>{{ info.real_name }}</b>
+</p>
+{% else %}
+not login
+{% endif %}
+{% endblock %}

@@ -4,8 +4,8 @@
 You're logged in already!
 
 {% else %}
-    <h1>Sign In</h1>
-    <form action="\login" method="post" novalidate>
+    <h1>Register</h1>
+    <form action="\register" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
             {{ form.username.label }}<br>
@@ -18,6 +18,20 @@ You're logged in already!
             {{ form.password.label }}<br>
             {{ form.password(size=32) }}<br>
             {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.real_name.label }}<br>
+            {{ form.real_name(size=32) }}<br>
+            {% for error in form.real_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.tel.label }}<br>
+            {{ form.tel(size=32) }}<br>
+            {% for error in form.tel.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
