@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+
+<form action="\result" method="post" novalidate>
+
+    {{ form.hidden_tag() }}
+    {{ form.dates.label }}
+        {% for subfield in form.dates %}
+<tr>
+    <td>{{ subfield }}</td>
+    <td>{{ subfield.label }}</td>
+</tr>
+{% endfor %}
+    {% for error in form.dates.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+
+
+ <p>{{ form.course1 }}  {{ form.course1.label }}</p>
+ <p>{{ form.course2 }}  {{ form.course2.label }}</p>
+ <p>{{ form.course3 }}  {{ form.course3.label }}</p>
+ <p>{{ form.course4 }}  {{ form.course4.label }}</p>
+ <p>{{ form.course5 }}  {{ form.course5.label }}</p>
+ <p>{{ form.course6 }}  {{ form.course6.label }}</p>
+ <p>{{ form.course7 }}  {{ form.course7.label }}</p>
+ <p>{{ form.course8 }}  {{ form.course8.label }}</p>
+ <p>{{ form.course9 }}  {{ form.course9.label }}</p>
+ <p>{{ form.course10 }} {{ form.course10.label }}</p>
+
+    {{ form.region.label }}
+    {% for subfield in form.region %}
+<tr>
+    <td>{{ subfield }}</td>
+    <td>{{ subfield.label }}</td>
+</tr>
+{% endfor %}
+
+    <p>{{ form.submit() }}</p>
+</form>
+ {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+       <span style="color: red;">{{ message }}</span>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+</body>
+</html>

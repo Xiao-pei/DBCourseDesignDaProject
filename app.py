@@ -7,11 +7,21 @@ import sqlite3
 import datetime
 import time
 import config
-from forms import LoginForm, RegisterForm, UpdateForm
+from forms import LoginForm, RegisterForm, UpdateForm, SearchForm
 
 
 app = Flask(__name__)
 app.config.from_object('config')
+course_choices = [(datetime.timedelta(hours=8, minutes=15), '第01节课'),
+                  (datetime.timedelta(hours=9, minutes=10), '第02节课'),
+                  (datetime.timedelta(hours=10, minutes=15), '第03节课'),
+                  (datetime.timedelta(hours=11, minutes=10), '第04节课'),
+                  (datetime.timedelta(hours=13, minutes=50), '第05节课'),
+                  (datetime.timedelta(hours=14, minutes=45), '第06节课'),
+                  (datetime.timedelta(hours=15, minutes=40), '第07节课'),
+                  (datetime.timedelta(hours=16, minutes=45), '第08节课'),
+                  (datetime.timedelta(hours=17, minutes=45), '第09节课'),
+                  (datetime.timedelta(hours=19, minutes=20), '第10节课')]
 
 
 @app.before_request
@@ -30,8 +40,11 @@ def teardown_req(exception):
 # 首页，待修改
 @app.route('/')
 def hello():
-    form = LoginForm()
-    return render_template('login.html', title='Sign In', form=form)
+    if session.get('logged_in') is not None:
+        return redirect(url_for('user_profile', user_id=session['user_id']))
+    else:
+        form = LoginForm()
+        return render_template('login.html', title='Sign In', form=form)
 
 
 def md5_user_psw(name, psw):
@@ -122,7 +135,7 @@ def user_profile_update(user_id):
             if md5_user_psw(res[1], password) == res[2]:  # 提交了form且密码正确
                 g.db.execute('UPDATE user SET username=?,pass_hash=?,real_name=?,tel=? WHERE id=?',
                              [name, md5_user_psw(name, password), real_name, tel, user_id])
-                return redirect(url_for(user_profile))
+                return redirect(url_for('user_profile', user_id=session['user_id']))
             else:
                 flash(message='password error')
                 return render_template('update.html', title='Update', form=form)
@@ -132,7 +145,7 @@ def user_profile_update(user_id):
             form.tel.data = res[4]
             return render_template('update.html', title='Update', form=form)
     # 不是本用户访问
-    return redirect(url_for('login'))  # 待修改
+    return redirect(url_for('hello'))  # 待修改
 
 
 @app.route('/logout')

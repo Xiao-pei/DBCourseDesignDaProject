@@ -1,56 +1,63 @@
+<head>
+    <title>zhuce</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
 {% block content %}
 {% if session['logged_in'] %}
 
 You're logged in already!
 
 {% else %}
-    <h1>Register</h1>
-    <form action="\register" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}<br>
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password_confirm.label }}<br>
-            {{ form.password_confirm(size=32) }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.real_name.label }}<br>
-            {{ form.real_name(size=32) }}<br>
-            {% for error in form.real_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.tel.label }}<br>
-            {{ form.tel(size=32) }}<br>
-            {% for error in form.tel.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
-    {% endif %}
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
-       <span style="color: red;">{{ message }}</span>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-
+<div id="registerCentre">
+    <div class="cardBackground">
+        <h1 class="bigTitle">Register</h1>
+        <form action="\register" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.username.label(class="hintLabel") }}
+                {{ form.username(size=32, class="inputo") }}<br>
+                {% for error in form.username.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.password.label(class="hintLabel") }}
+                {{ form.password(size=32, class="inputo") }}<br>
+                {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.password_confirm.label(class="hintLabel") }}
+                {{ form.password_confirm(size=32, class="inputo") }}<br>
+                {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.real_name.label(class="hintLabel") }}
+                {{ form.real_name(size=32, class="inputo") }}<br>
+                {% for error in form.real_name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.tel.label(class="hintLabel") }}
+                {{ form.tel(size=32, class="inputo") }}<br>
+                {% for error in form.tel.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit(class="yesButton") }}</p>
+        </form>
+        {% endif %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <span style="color: red;">{{ message }}</span>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+</div>
 {% endblock %}
