@@ -148,6 +148,62 @@ def user_profile_update(user_id):
     return redirect(url_for('hello'))  # 待修改
 
 
+@app.route('/search/time', methods=['GET'])
+def search_time():
+    form = SearchForm()
+    return render_template('search.html', form=form)
+
+
+@app.route('/result', methods=['POST'])
+def search_time_result():
+    date = request.form.get('dates')
+    region = request.form.get('region')
+    checkboxes, i = [], 1
+    begin, end = -1, -1
+    # i 代表第i节课
+    while i < 11:
+        tmpresult = request.form.get('course' + str(i)) is not None
+        checkboxes.append(tmpresult)
+        if begin != -1 and end != -1 and tmpresult is True:
+            flash(message='你这样节次选择不行')
+            return redirect(url_for('search_time'))
+        if tmpresult is False and begin != -1 and end == -1:
+            end = i - 1
+        if tmpresult is True and begin == -1:
+            begin = i
+        i = i + 1
+    if begin == -1 and end == -1:
+        flash(message='请选节次')
+        return redirect(url_for('search_time'))
+    begin_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[begin-1][0]
+    end_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[end-1][0]
+    begin_time, end_time = int(time.mktime(begin_date.timetuple())), int(time.mktime(end_date.timetuple()))
+    cursor_occupied_room = g.db.execute('SELECT DISTINCT  room_id FROM occupied_room WHERE'
+                                        ' start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<? '
+                                        'AND end_time>? AND room_id IN (SElECT id FROM room WHERE region = ?)',
+                                        [begin_time, end_time, begin_time, end_time, begin_time, end_time, region])
+    cursor_reserve = g.db.execute('SELECT DISTINCT  room_id FROM reserve WHERE '
+                                  'start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<? '
+                                  'AND end_time>? AND room_id IN (SElECT id FROM room WHERE region = ?)',
+                                  [begin_time, end_time, begin_time, end_time, begin_time, end_time, region])
+    cursor_room = g.db.execute('SELECT id, address,size,multimedia FROM room WHERE region = ?', [region])
+    res = cursor_occupied_room.fetchall()
+    occupied_room_id = []  # 不可用的教室id
+    for line in res:
+        occupied_room_id.append(line[0])
+    res = cursor_reserve.fetchall()
+    for line in res:
+        occupied_room_id.append(line[0])
+    room_ids = cursor_room.fetchall()
+    avalible_rooms = []
+    for room_id in room_ids:
+        if room_id[0] not in occupied_room_id:
+            avalible_rooms.append({'id': room_id[0], 'address': room_id[1],
+                                   'size': room_id[2], 'multimedia': room_id[3]})
+
+    return jsonify(avalible_rooms)
+
+
 @app.route('/logout')
 def logout():
     # 如果会话中有用户id就删除它。

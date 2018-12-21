@@ -12,11 +12,10 @@ import time
 import datetime
 
 
-
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Sign In')
+    submit = SubmitField('SIGN IN')
 
 
 class RegisterForm(FlaskForm):
@@ -24,8 +23,8 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password_confirm = PasswordField('Confirm Password', validators=[DataRequired()])
     real_name = StringField('Real Name', validators=[DataRequired()])
-    tel = IntegerField('Telephone Number', validators=[DataRequired()])
-    submit = SubmitField('Register')
+    tel = IntegerField('Telephone Number', validators=[DataRequired(message='123456')])
+    submit = SubmitField('REGISTER')
 
 
 class UpdateForm(FlaskForm):
