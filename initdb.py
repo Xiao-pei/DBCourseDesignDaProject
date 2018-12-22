@@ -29,6 +29,7 @@ with conn:
                             id integer primary key autoincrement,
                             region varchar(20) not null,
                             address varchar(64) not null,
+                            room_name varchar(20) not null,
                             size int not null,
                             multimedia int not null
                         )''')
@@ -73,8 +74,8 @@ with conn:
     # password: xiaopc
     cur.execute('''insert into user(username, pass_hash, real_name,tel,last_login_time,type)
     values (\'xiaopc\', \'5aa8a6c678dbb5435d01f813c3dac7cc\', \'Xiaopc\',666,100, 0)''')
-    cur.execute('''insert into room (region,address,size,multimedia)
-    values (\'江安\', \'一教C座C701\', 60,1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'一教C座\',\'C701\', 60,1)''')
     cur.execute('''insert into occupied_room (room_id,start_time,end_time) values 
     (1,0,1)''')
 

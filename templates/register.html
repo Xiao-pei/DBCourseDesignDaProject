@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 </head>
 {% block content %}
-{% if session['logged_in'] %}
+{% if session.get('user_id') is number %}
 
 You're logged in already!
 

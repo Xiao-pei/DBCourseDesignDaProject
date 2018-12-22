@@ -40,7 +40,7 @@ def teardown_req(exception):
 # 首页，待修改
 @app.route('/')
 def hello():
-    if session.get('logged_in') is not None:
+    if session.get('user_id') is not None:
         return redirect(url_for('user_profile', user_id=session['user_id']))
     else:
         form = LoginForm()
@@ -77,7 +77,6 @@ def login():
             if res is not None:
                 session['user_id'] = res[0]
                 session['user_type'] = res[1]
-                session['logged_in'] = True
                 # 更新最后登陆时间
                 g.db.execute('UPDATE user SET last_login_time = ? '
                              'WHERE username=? AND pass_hash=?', [get_time(), name, md5_user_psw(name, password)])
@@ -186,7 +185,7 @@ def search_time_result():
                                   'start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<? '
                                   'AND end_time>? AND room_id IN (SElECT id FROM room WHERE region = ?)',
                                   [begin_time, end_time, begin_time, end_time, begin_time, end_time, region])
-    cursor_room = g.db.execute('SELECT id, address,size,multimedia FROM room WHERE region = ?', [region])
+    cursor_room = g.db.execute('SELECT id, address,room_name,size,multimedia FROM room WHERE region = ?', [region])
     res = cursor_occupied_room.fetchall()
     occupied_room_id = []  # 不可用的教室id
     for line in res:
@@ -196,19 +195,32 @@ def search_time_result():
         occupied_room_id.append(line[0])
     room_ids = cursor_room.fetchall()
     avalible_rooms = []
+    buildings = [[]]
     for room_id in room_ids:
         if room_id[0] not in occupied_room_id:
             avalible_rooms.append({'id': room_id[0], 'address': room_id[1],
-                                   'size': room_id[2], 'multimedia': room_id[3]})
+                                   'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]})
+            if room_id[1] in buildings[0]:
+                index = buildings[0].index(room_id[1])
+                buildings.get(index).append({'id': room_id[0], 'address': room_id[1],
+                                             'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]})
+            else:
+                buildings[0].append(room_id[1])
+                buildings.append([{'id': room_id[0], 'address': room_id[1],
+                                   'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]}])
 
-    return jsonify(avalible_rooms)
+    return render_template('search_result.html', buildings=buildings)
+
+
+@app.route('/reserve/<room_id>')
+def reserve(room_id):
+    begin_date = request.args['']
 
 
 @app.route('/logout')
 def logout():
     # 如果会话中有用户id就删除它。
     session.pop('user_id', None)
-    session['logged_in'] = False
     return jsonify({'code': 200})
 
 

@@ -1,5 +1,5 @@
 {% block content %}
-{% if session['logged_in'] %}
+{% if session['user_id'] %}
     <h1>Welcome to {{username}}</h1>
 
 <p>username: <b>{{ info.username }}</b></p>
