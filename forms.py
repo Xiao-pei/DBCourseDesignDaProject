@@ -49,7 +49,7 @@ class SearchForm(FlaskForm):
     days = getdays()
     choices = []
     for day in days:
-        choices.append((int(time.mktime(day.date().timetuple())), day.date()))
+        choices.append((int(time.mktime(day.date().timetuple())), day.date().strftime('%m/%d')))
 
     dates = RadioField('日期', choices=choices, validators=[DataRequired(message="请选择日期")], default=choices[0][0])
     course1 = BooleanField('第01节课')
@@ -64,3 +64,8 @@ class SearchForm(FlaskForm):
     course10 = BooleanField('第10节课')
     region = RadioField('校区', choices=[('望江', '望江'), ('华西', '华西'), ('江安', '江安')], default='江安')
     submit = SubmitField('Submit')
+
+
+class ReserveForm(FlaskForm):
+    begin_time = IntegerField(validators=[DataRequired()])
+    end_time = IntegerField(validators=[DataRequired()])

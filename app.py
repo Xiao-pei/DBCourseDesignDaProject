@@ -194,27 +194,30 @@ def search_time_result():
     for line in res:
         occupied_room_id.append(line[0])
     room_ids = cursor_room.fetchall()
-    avalible_rooms = []
-    buildings = [[]]
+    buliding_names = []
+    buildings = []
     for room_id in room_ids:
         if room_id[0] not in occupied_room_id:
-            avalible_rooms.append({'id': room_id[0], 'address': room_id[1],
-                                   'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]})
-            if room_id[1] in buildings[0]:
-                index = buildings[0].index(room_id[1])
+            if room_id[1] in buliding_names:
+                index = buliding_names.index(room_id[1])
                 buildings.get(index).append({'id': room_id[0], 'address': room_id[1],
                                              'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]})
             else:
-                buildings[0].append(room_id[1])
+                buliding_names.append(room_id[1])
                 buildings.append([{'id': room_id[0], 'address': room_id[1],
                                    'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]}])
 
-    return render_template('search_result.html', buildings=buildings)
+    return render_template('search_result.html', buildings=buildings, buliding_names=buliding_names,
+                           date=date, begin=begin, end=end)
 
 
 @app.route('/reserve/<room_id>')
 def reserve(room_id):
-    begin_date = request.args['']
+    date, begin, end = request.args.get('date'), request.args.get('begin'), request.args.get('end')
+    begin_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[begin - 1][0]
+    end_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[end - 1][0]
+    begin_time, end_time = int(time.mktime(begin_date.timetuple())), int(time.mktime(end_date.timetuple()))
+    return render_template('reserve.html',)
 
 
 @app.route('/logout')
