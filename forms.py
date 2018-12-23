@@ -69,3 +69,4 @@ class SearchForm(FlaskForm):
 class ReserveForm(FlaskForm):
     begin_time = IntegerField(validators=[DataRequired()])
     end_time = IntegerField(validators=[DataRequired()])
+    room_id = IntegerField(validators=[DataRequired()])

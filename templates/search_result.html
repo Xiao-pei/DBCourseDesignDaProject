@@ -8,7 +8,16 @@
 {% for building in buildings %}
     <p>{{ buliding_names[buildings.index(building)] }}:</p>
 {% for room in building %}
-<p><a href={{ url_for('reserve',room_id=room['id'],begin=begin,end=end,date=date) }}> {{ room['room_name'] }} </a></p>
+<p>
+    <a href={{ url_for('reserve',room_id=room['id'],begin=begin,end=end,date=date) }}> {{ room['room_name'] }} </a>
+    Size : {{ room['size'] }}
+    Multimedia :
+    {% if room['multimedia'] == 1%}
+        available
+    {% else %}
+        unavailable
+    {% endif %}
+</p>
 {% endfor %}
 {% endfor %}
 </body>
