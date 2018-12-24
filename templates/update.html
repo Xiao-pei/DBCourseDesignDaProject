@@ -1,43 +1,69 @@
+<!DOCTYPE html>
+
+<head>
+    <title>教室预约-更新账户</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/update.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/alert.css')}}">
+    <script src='{{url_for('static', filename='js/jquery-3.3.1.min.js')}}'></script>
+    <script src='{{url_for('static', filename='js/update.js')}}'></script>
+    <script src='{{url_for('static', filename='js/sweetalert.min.js')}}'></script>
+</head>
 {% block content %}
-    <h1>Register</h1>
-    <form action="/user/{{ session['user_id'] }}/update" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}<br>
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+
+<body>
+    <div class="overlay">
+        <div class="card">
+            <h1 class="bigTitle">Update</h1>
+            <form action="/user/{{ session['user_id'] }}/update" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.username.label(class="hintLabel") }}
+                    {{ form.username(size=32, class="inputo") }}<br>
+                    {% for error in form.username.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p class="none">
+                    {{ form.password.label(class="hintLabel") }}
+                    {{ form.password(size=32, class="inputo") }}<br>
+                    {% for error in form.password.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    <script>
+                        wrongPassword()
+                    </script>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.real_name.label(class="hintLabel") }}
+                    {{ form.real_name(size=32, class="inputo") }}<br>
+                    {% for error in form.real_name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.tel.label(class="hintLabel") }}
+                    {{ form.tel(size=32, class="inputo") }}<br>
+                    {% for error in form.tel.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit(class="none") }}</p>
+            </form>
+            <p><button class="yesButton" id="updateButton">UPDATE</button></p>
+            <p><button class="yesButton secondary">CHANGE PASSWORD</button></p>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <script>
+                wrongPassword()
+            </script>
+
             {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.real_name.label }}<br>
-            {{ form.real_name(size=32) }}<br>
-            {% for error in form.real_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.tel.label }}<br>
-            {{ form.tel(size=32) }}<br>
-            {% for error in form.tel.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
-       <span style="color: red;">{{ message }}</span>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</body>
 
 {% endblock %}

@@ -1,0 +1,67 @@
+.inputo{
+    width: 387px;
+}
+
+.inputo:hover{
+    border: 1px solid rgb(163, 223, 236);
+}
+
+.inputo:focus{
+    border: 1px solid rgb(112, 208, 230);
+}
+
+.yesButton{
+    width: 400px;
+    background: rgb(70, 192, 220);
+    box-shadow: 0 6px 20px rgb(70, 192, 220, 0.2);
+}
+
+.yesButton:hover:enabled, .yesButton:active:enabled{
+    box-shadow: 0 6px 20px rgba(70, 192, 220, 0.25), 0 12px 45px rgba(70, 192, 220, 0.1);
+}
+
+.swal-modal{
+    width: 530px;
+    box-shadow: 0 10px 25px rgba(1,1,1,0.05), 0 30px 50px rgba(1,1,1,0.06);
+}
+
+.swal-title {
+    width: 405px;
+    text-align: left;
+    display: inline-block;
+}
+
+.swal-text {
+    width: 420px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.swal-button--forget {
+    background-color: #f3bf4d;
+}
+
+.swal-button--forget:active {
+    background-color: #e7b342;
+}
+
+.swal-button--forget:not([disabled]):hover {
+    background-color: #eebb4e;
+}
+
+
+.yesButton.secondary{
+    margin: 0;
+    color: rgb(173, 173, 173);
+    background: white;
+    box-shadow: 0 0 0;
+    border: 1px solid rgb(207, 207, 207);
+}
+
+.yesButton.secondary:hover{
+    margin: 0;
+    color: rgb(173, 173, 173);
+    background: rgb(241, 241, 241);
+    box-shadow: 0 0 0;
+    border: 1px solid rgb(207, 207, 207);
+}

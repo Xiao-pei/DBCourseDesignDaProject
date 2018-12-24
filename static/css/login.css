@@ -1,0 +1,67 @@
+.mainPageCard{
+    margin: 0 auto;
+    background-color: white;
+    padding: 50px 40px;
+    border-radius: 5px;
+    background: transparent;
+}
+
+#loginBox{
+    padding: 130px 0 0 610px;
+}
+
+#MainPageBackgroundImage{
+    width: 1000px;
+    height: 700px;
+}
+
+.inputErrorMessage{
+    font-size: 16px;
+    color: #ff6868;
+}
+
+#logInCenter{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -430px;
+    margin-left: -540px;
+}
+
+.yesButton.login{
+    background: #ab91f1;
+    box-shadow: 0 6px 20px #ab91f127;
+}
+
+.yesButton:disabled{
+    background: #efd1d1;
+    box-shadow: 0 0 0;
+}
+
+.yesButton.login:hover:enabled{
+    box-shadow: 0 6px 20px #ab91f127, 0 12px 45px #ab91f127;
+}
+
+#loginShadowBox{
+    margin: 111px 0 0 79px;
+    width: 946px;
+    height: 586px;
+    background: white;
+    box-shadow: 0 10px 25px rgba(1,1,1,0.05), 0 30px 50px rgba(1,1,1,0.06);
+}
+
+#registerBox{
+    width: 320px;
+    text-align: right;
+    font-size: 15px;
+}
+
+#registerText{
+    text-decoration: none;
+    color: #c2b2e8;
+}
+
+#registerText:hover{
+    text-decoration: underline;
+    color: #b090f8;
+}

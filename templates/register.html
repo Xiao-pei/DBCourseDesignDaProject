@@ -1,63 +1,109 @@
 <head>
-    <title>zhuce</title>
+    <title>教室预约-注册</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/register.css')}}">
+    <script src='{{url_for('static', filename='js/jquery-3.3.1.min.js')}}'></script>  
+    <script src='{{url_for('static', filename='js/register.js')}}'></script>   
+    <script src='{{url_for('static', filename='js/sweetalert.min.js')}}'></script>   
 </head>
 {% block content %}
-{% if session.get('user_id') is number %}
-
-You're logged in already!
-
-{% else %}
-<div id="registerCentre">
+<body>
+<div id="registerCenter">
     <div class="cardBackground">
         <h1 class="bigTitle">Register</h1>
         <form action="\register" method="post" novalidate>
             {{ form.hidden_tag() }}
             <p>
                 {{ form.username.label(class="hintLabel") }}
-                {{ form.username(size=32, class="inputo") }}<br>
+                {{ form.username(size=32, class="inputo register", id="username") }}<br>
                 {% for error in form.username.errors %}
-                <span style="color: red;">[{{ error }}]</span>
+                {% if error == "This field is required." %}
+                        <script>
+                            inputBoxErrorStatus("username")
+                        </script>
+                        {% else %}
+                        <span span class="inputErrorMessage">[{{ error }}]</span>
+                        {% endif %}
                 {% endfor %}
             </p>
             <p>
                 {{ form.password.label(class="hintLabel") }}
-                {{ form.password(size=32, class="inputo") }}<br>
+                {{ form.password(size=32, class="inputo register", id="password") }}<br>
                 {% for error in form.password.errors %}
-                <span style="color: red;">[{{ error }}]</span>
+                {% if error == "This field is required." %}
+                        <script>
+                            inputBoxErrorStatus("password")
+                        </script>
+                        {% else %}
+                        <span span class="inputErrorMessage">[{{ error }}]</span>
+                        {% endif %}
                 {% endfor %}
             </p>
             <p>
                 {{ form.password_confirm.label(class="hintLabel") }}
-                {{ form.password_confirm(size=32, class="inputo") }}<br>
+                {{ form.password_confirm(size=32, class="inputo register", id="password_confirm") }}<br>
                 {% for error in form.password.errors %}
-                <span style="color: red;">[{{ error }}]</span>
+                {% if error == "This field is required." %}
+                        <script>
+                            inputBoxErrorStatus("password_confirm")
+                        </script>
+                        {% else %}
+                        <span span class="inputErrorMessage">[{{ error }}]</span>
+                        {% endif %}
                 {% endfor %}
             </p>
             <p>
                 {{ form.real_name.label(class="hintLabel") }}
-                {{ form.real_name(size=32, class="inputo") }}<br>
+                {{ form.real_name(size=32, class="inputo register", id="real_name") }}<br>
                 {% for error in form.real_name.errors %}
-                <span style="color: red;">[{{ error }}]</span>
+                {% if error == "This field is required." %}
+                        <script>
+                            inputBoxErrorStatus("real_name")
+                        </script>
+                        {% else %}
+                        <span span class="inputErrorMessage">[{{ error }}]</span>
+                        {% endif %}
                 {% endfor %}
             </p>
             <p>
                 {{ form.tel.label(class="hintLabel") }}
-                {{ form.tel(size=32, class="inputo") }}<br>
-                {% for error in form.tel.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
+                {{ form.tel(size=32, class="inputo register", id="tel") }}<br>
+                
             </p>
-            <p>{{ form.submit(class="yesButton") }}</p>
+            <p>{{ form.submit(class="yesButton register") }}</p>
         </form>
-        {% endif %}
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
-        <span style="color: red;">{{ message }}</span>
+        {% if message == "两次密码不一致" %}
+        <script>
+            disableButton("PASSWORD DO NOT MATCH")
+            inputBoxErrorStatus("password")
+            inputBoxErrorStatus("password_confirm")
+        </script>
+        {% elif message == "用户名已被注册" %}
+        <script>
+            disableButton("USERNAME ALREADY USED")
+            inputBoxErrorStatus("username")
+        </script>
+        {% endif %}
+        
         {% endfor %}
         {% endif %}
         {% endwith %}
+        <div id="loginBox"> <a href="/login" id="loginText"> Sign in > </a> </div>
     </div>
 </div>
 {% endblock %}
+</body>
+
+{% for error in form.tel.errors %}
+    {% if error == "电话格式错误" %}
+            <script>
+                disableButton("TELEPHONE MUST BE NUMBER")
+                inputBoxErrorStatus("tel")
+            </script>
+            {% else %}
+            <span span class="inputErrorMessage">[{{ error }}]</span>
+            {% endif %}
+    {% endfor %}

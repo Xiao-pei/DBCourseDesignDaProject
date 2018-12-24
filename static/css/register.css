@@ -1,0 +1,49 @@
+.cardBackground{    
+    padding: 60px 80px 80px 80px;
+}
+
+#registerCenter{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -390px;
+    margin-left: -280px;
+}
+
+#loginBox{
+    width: 400px;
+    text-align: right;
+    font-size: 15px;
+}
+
+#loginText{
+    text-decoration: none;
+    color: #edb2c7;
+}
+
+#loginText:hover{
+    text-decoration: underline;
+    color: #e16c96;
+}
+
+.yesButton.register:disabled{
+    background: #efd1d1;
+    box-shadow: 0 0 0;
+}
+
+
+.inputo{
+    width: 400px;
+}
+
+.yesButton.register{
+    width: 400px;
+}
+
+.inputo.register:hover{
+    border: 1px solid #f7c3d7;
+}
+
+.inputo.register:focus{
+    border: 1px solid #ff84b2;
+}
