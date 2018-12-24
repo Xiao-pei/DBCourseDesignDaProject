@@ -149,8 +149,11 @@ def user_profile_update(user_id):
 
 @app.route('/search/time', methods=['GET'])
 def search_time():
-    form = SearchForm()
-    return render_template('search.html', form=form)
+    if session.get('user_id') is not None:
+        form = SearchForm()
+        return render_template('search.html', form=form)
+    else:
+        return redirect(url_for('hello'))
 
 
 @app.route('/result', methods=['POST'])
@@ -178,12 +181,12 @@ def search_time_result():
     end_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[end-1][0]
     begin_time, end_time = int(time.mktime(begin_date.timetuple())), int(time.mktime(end_date.timetuple()))
     cursor_occupied_room = g.db.execute('SELECT DISTINCT  room_id FROM occupied_room WHERE'
-                                        ' start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<? '
-                                        'AND end_time>? AND room_id IN (SElECT id FROM room WHERE region = ?)',
+                                        ' start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<=? '
+                                        'AND end_time>=? AND room_id IN (SElECT id FROM room WHERE region = ?)',
                                         [begin_time, end_time, begin_time, end_time, begin_time, end_time, region])
     cursor_reserve = g.db.execute('SELECT DISTINCT  room_id FROM reserve WHERE '
-                                  'start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<? '
-                                  'AND end_time>? AND room_id IN (SElECT id FROM room WHERE region = ?)',
+                                  'start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<=? '
+                                  'AND end_time>=? AND room_id IN (SElECT id FROM room WHERE region = ?)',
                                   [begin_time, end_time, begin_time, end_time, begin_time, end_time, region])
     cursor_room = g.db.execute('SELECT id, address,room_name,size,multimedia FROM room WHERE region = ?', [region])
     res = cursor_occupied_room.fetchall()
@@ -211,20 +214,61 @@ def search_time_result():
                            date=date, begin=begin, end=end)
 
 
-@app.route('/reserve/<room_id>')
+@app.route('/reserve/<room_id>', methods=['GET'])
 def reserve(room_id):
-    date, begin, end = request.args.get('date'), request.args.get('begin'), request.args.get('end')
-    begin_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[begin - 1][0]
-    end_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[end - 1][0]
-    begin_time, end_time = int(time.mktime(begin_date.timetuple())), int(time.mktime(end_date.timetuple()))
-    return render_template('reserve.html',)
+    if session.get('user_id') is not None:
+        if request.method == 'GET':
+            date, begin, end = int(request.args.get('date')), int(request.args.get('begin')), int(
+                request.args.get('end'))
+            cursor_room = g.db.execute('SELECT id, address,room_name,size FROM room WHERE id = ?', [room_id])
+            res = cursor_room.fetchone()
+            if res is None:
+                return redirect(url_for('search_time'))
+            address, room_name = res[1], res[2]
+            begin_date = datetime.datetime.fromtimestamp(date) + course_choices[begin - 1][0]
+            end_date = datetime.datetime.fromtimestamp(date) + course_choices[end - 1][0]
+            begin_time, end_time = int(time.mktime(begin_date.timetuple())), int(time.mktime(end_date.timetuple()))
+            return render_template('reserve.html', address=address, room_name=room_name, size=res[3],
+                                   room_id=room_id, begin_time=begin_time, end_time=end_time)
+    else:
+        return redirect(url_for('hello'))
+
+
+@app.route('/reserve/result', methods=['POST'])
+def reserve_result():
+    begin_time, end_time = request.form.get('begin_time'), request.form.get('end_time')
+    room_id = request.form.get('room_id')
+    reason = request.form.get('reason')
+    cursor_occupied_room = g.db.execute('SELECT DISTINCT  room_id FROM occupied_room WHERE '
+                                        '(start_time>? AND start_time<? OR end_time>? AND end_time<? OR start_time<=?'
+                                        'AND end_time>=? )AND room_id=?',
+                                        [begin_time, end_time, begin_time, end_time, begin_time, end_time,
+                                         room_id])
+    cursor_reserve = g.db.execute('SELECT DISTINCT  room_id FROM reserve WHERE '
+                                  '(start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<=? '
+                                  'AND end_time>=?) AND room_id=?',
+                                  [begin_time, end_time, begin_time, end_time, begin_time, end_time, room_id])
+    if cursor_reserve.fetchone() is None and cursor_occupied_room.fetchone() is None:
+        now = int(time.mktime(datetime.datetime.now().timetuple()))
+        g.db.execute('insert into reserve(user_id, room_id, result, start_time, end_time,'
+                     'apply_time, reason)values(?,?,?,?,?,?,?)',
+                     [session.get('user_id'), room_id, 0, begin_time,
+                      end_time, now, reason])
+        return jsonify({'code': 200})
+    else:
+        return redirect(url_for('search_time'))
 
 
 @app.route('/logout')
 def logout():
     # 如果会话中有用户id就删除它。
     session.pop('user_id', None)
-    return jsonify({'code': 200})
+    return url_for('hello')
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
 
 
 if __name__ == '__main__':

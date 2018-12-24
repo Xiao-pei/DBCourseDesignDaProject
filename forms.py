@@ -5,7 +5,7 @@ from typing import List
 __author__ = 'Xiao Pei'
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, BooleanField, SelectMultipleField, RadioField, validators, FormField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, BooleanField, RadioField, validators, FormField, TextAreaField
 from wtforms.validators import DataRequired
 from wtforms.form import BaseForm
 import time
@@ -66,7 +66,3 @@ class SearchForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
-class ReserveForm(FlaskForm):
-    begin_time = IntegerField(validators=[DataRequired()])
-    end_time = IntegerField(validators=[DataRequired()])
-    room_id = IntegerField(validators=[DataRequired()])
