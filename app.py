@@ -1,14 +1,13 @@
-
+# -*- coding: utf-8 -*-
 __author__ = 'Xiao Pei'
 
-from flask import Flask, g, session, render_template, request, jsonify, flash, abort, redirect, url_for
+from flask import Flask, g, session, render_template, request, jsonify, flash, redirect, url_for
 import hashlib
 import sqlite3
 import datetime
 import time
 import config
 from forms import LoginForm, RegisterForm, UpdateForm, SearchForm
-
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -22,6 +21,8 @@ course_choices = [(datetime.timedelta(hours=8, minutes=15), '第01节课'),
                   (datetime.timedelta(hours=16, minutes=45), '第08节课'),
                   (datetime.timedelta(hours=17, minutes=45), '第09节课'),
                   (datetime.timedelta(hours=19, minutes=20), '第10节课')]
+time_to_course = {'815': '第01节课', '910': '第02节课', '1015': '第03节课', '1110': '第04节课', '1350': '第05节课',
+                  '1445': '第06节课', '1540': '第07节课', '1645': '第08节课', '1745': '第09节课', '1920': '第10节课'}
 
 
 @app.before_request
@@ -149,6 +150,7 @@ def user_profile_update(user_id):
 
 @app.route('/search/time', methods=['GET'])
 def search_time():
+    # 已登陆显示搜索页，未登录跳转回到开始页
     if session.get('user_id') is not None:
         form = SearchForm()
         return render_template('search.html', form=form)
@@ -177,8 +179,8 @@ def search_time_result():
     if begin == -1 and end == -1:
         flash(message='请选节次')
         return redirect(url_for('search_time'))
-    begin_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[begin-1][0]
-    end_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[end-1][0]
+    begin_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[begin - 1][0]
+    end_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[end - 1][0]
     begin_time, end_time = int(time.mktime(begin_date.timetuple())), int(time.mktime(end_date.timetuple()))
     cursor_occupied_room = g.db.execute('SELECT DISTINCT  room_id FROM occupied_room WHERE'
                                         ' start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<=? '
@@ -259,10 +261,38 @@ def reserve_result():
         return redirect(url_for('search_time'))
 
 
+@app.route('/reserve/management', methods=['POST', 'GET'])
+def reserve_management():
+    if session['user_type'] == 1:
+        if request.method == 'GET':
+            cursor_reserves = g.db.execute('SELECT * FROM reserve WHERE result=0')
+            res = cursor_reserves.fetchall()
+            reserves = []
+            for line in res:
+                cursor = g.db.execute('SELECT region,address,room_name FROM room WHERE id=?', [line[2]])
+                room_info = cursor.fetchone()
+                begin_time, end_time = time.localtime(line[4]), time.localtime(line[5])
+                apply_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(line[6]))
+                date = time.strftime("%Y-%m-%d", begin_time)
+                address = room_info[0] + room_info[1] + room_info[2]
+                begin_course = time_to_course[str(begin_time.tm_hour) + str(begin_time.tm_min)]
+                end_course = time_to_course[str(end_time.tm_hour) + str(end_time.tm_min)]
+                reserves.append({'user_id': line[1], 'apply_time': apply_date, 'date': date,
+                                 'begin_course': begin_course, 'end_course': end_course, 'address': address,
+                                 'reason': line[7], 'reserve_id': line[0]})
+            return render_template('reserve_management.html', reserves=reserves)
+        else:
+            if request.form.get('submit') == 'Approve':
+                return 'approve'
+            else:
+                return 'No u dont'
+
+
 @app.route('/logout')
 def logout():
     # 如果会话中有用户id就删除它。
     session.pop('user_id', None)
+    session.pop('user_type', None)
     return url_for('hello')
 
 
