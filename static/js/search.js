@@ -1,3 +1,4 @@
+var selectedClassNum = 0
 $(document).ready(function () {
 
     $(".dateSelecterCell ").unbind("click").click(function(){
@@ -9,7 +10,6 @@ $(document).ready(function () {
 
     $(".courseSelecterCell").hover(function () {
         if ($(this).hasClass("selected") || $(this).hasClass("disabled")) return
-        $(this).addClass("avaliable")
         $(this).find(".courseAnimateDiv").stop().animate({ width: "4px" }, 300, 'easeOutExpo')
     }, function () {
         if ($(this).hasClass("selected") || $(this).hasClass("disabled")) return
@@ -25,6 +25,8 @@ $(document).ready(function () {
             $(this).find(".courseAnimateDiv").stop().animate({ width: "4px" }, 160, 'easeOutExpo')
             $(this).find(".courseIndex").removeClass("light")
             $(this).find(".classTimeLabel").removeClass("light")
+            selectedClassNum -= 1
+            refreshClassButtons()
             if ($(this).find(".courseCheckbox").prop('checked')) {
                 $(this).find(".courseCheckbox").prop('checked', false);
             }
@@ -35,9 +37,21 @@ $(document).ready(function () {
             $(this).find(".courseAnimateDiv").stop().animate({ width: "500px" }, 300, 'easeOutExpo')
             $(this).find(".courseIndex").addClass("light")
             $(this).find(".classTimeLabel").addClass("light")
+            selectedClassNum += 1
+            refreshClassButtons()
             if ($(this).find(".courseCheckbox").prop('checked') == false) {
                 $(this).find(".courseCheckbox").prop('checked', true)
             }
         }
     })
 })
+
+function refreshClassButtons(){
+    if (selectedClassNum == 0){
+        $(".courseSelecterCell ").removeClass("disabled")
+        return
+    } 
+    $(".courseSelecterCell").addClass("disabled")
+    $(".courseSelecterCell.selected").last().removeClass("disabled").nextAll(".courseSelecterCell.disabled").eq(0).removeClass("disabled")
+    $(".courseSelecterCell.selected").first().removeClass("disabled").prevAll(".courseSelecterCell.disabled").eq(0).removeClass("disabled")
+}

@@ -19,7 +19,7 @@
             <form action="\result" method="post" novalidate>
 
                 {{ form.hidden_tag() }}
-                <h1 class="bigTitle">Reserve</h1>
+                <h1 class="bigTitle">Reservation</h1>
                 <div class="dateSelecter insideCard">
                     <h1 class="secondaryTitle">Choose Date</h1>
                     {% for subfield in form.dates %}
@@ -59,7 +59,7 @@
                         {{form.course4.label(class="courseIndex") }}
                         <label class="classTimeLabel" id="course4Time">11:10 - 11:55</label>
                     </div>
-                <div class="classSplitLine"> </div>
+                    <div class="classSplitLine"> </div>
                     <div class="courseSelecterCell">
                         <div class="courseAnimateDiv"></div>
                         {{ form.course5(class="courseCheckbox") }}
@@ -98,20 +98,25 @@
                         <label class="classTimeLabel" id="course10Time">19:20 - 21:00</label>
                     </div>
                 </div>
-                {{ form.region.label }}
-                {% for subfield in form.region %}
-                <tr>
-                    <td>{{ subfield }}</td>
-                    <td>{{ subfield.label }}</td>
-                </tr>
-                {% endfor %}
-
+                <div class="campuselecter insideCard">
+                    {% for subfield in form.region %}
+                    <tr>
+                        <td>{{ subfield }}</td>
+                        <td>{{ subfield.label }}</td>
+                    </tr>
+                    {% endfor %}
+                </div>
                 <p>{{ form.submit() }}</p>
             </form>
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             {% for message in messages %}
-            <span style="color: red;">{{ message }}</span>
+            <script>
+                swal({
+                    title: "{{ message }}",
+                    icon: "error"
+                })
+            </script>
             {% endfor %}
             {% endif %}
             {% endwith %}
