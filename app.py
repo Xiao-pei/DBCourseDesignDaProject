@@ -282,10 +282,40 @@ def reserve_management():
                                  'reason': line[7], 'reserve_id': line[0]})
             return render_template('reserve_management.html', reserves=reserves)
         else:
+            reserve_id = request.form.get('reserve_id')
             if request.form.get('submit') == 'Approve':
-                return 'approve'
+                g.db.execute('UPDATE reserve SET result=? WHERE id=?', [1, reserve_id])
             else:
-                return 'No u dont'
+                g.db.execute('UPDATE reserve SET result=? WHERE id=?', [2, reserve_id])
+            return redirect(url_for('reserve_management'))
+    else:
+        return redirect(url_for('hello'))
+
+
+@app.route('/reserve/all', methods=['GET'])
+def reserve_all():
+    if session['user_type'] == 1:
+        cursor_reserves = g.db.execute('SELECT * FROM reserve WHERE result!=0')
+        res = cursor_reserves.fetchall()
+        reserves = []
+        for line in res:
+            cursor = g.db.execute('SELECT region,address,room_name FROM room WHERE id=?', [line[2]])
+            room_info = cursor.fetchone()
+            begin_time, end_time = time.localtime(line[4]), time.localtime(line[5])
+            apply_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(line[6]))
+            date = time.strftime("%Y-%m-%d", begin_time)
+            address = room_info[0] + room_info[1] + room_info[2]
+            begin_course = time_to_course[str(begin_time.tm_hour) + str(begin_time.tm_min)]
+            end_course = time_to_course[str(end_time.tm_hour) + str(end_time.tm_min)]
+            status = 'Rejected'
+            if line[3] == 1:
+                status = 'Approved'
+            reserves.append({'user_id': line[1], 'apply_time': apply_date, 'date': date,
+                             'begin_course': begin_course, 'end_course': end_course, 'address': address,
+                             'reason': line[7], 'reserve_id': line[0], 'status': status})
+        return render_template('reserve_all.html', reserves=reserves)
+    else:
+        redirect(url_for('hello'))
 
 
 @app.route('/logout')

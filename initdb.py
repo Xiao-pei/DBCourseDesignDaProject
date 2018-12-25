@@ -57,7 +57,7 @@ with conn:
                              foreign key(room_id) references room(id),
                              foreign key(user_id) references user(id)
                         )''')
-    # 消息推送表；source_id 发消息人id；dest_id 收消息人id ；resp_text 回复内容；resp_time 回复时间；
+    # 消息推送表；source_id 发消息人id；dest_id 收消息人id ；resp_text 回复内容；resp_time 回复时间；read 1已读，0未读
     cur.execute('''create table msg
                         (
                             id integer primary key autoincrement,
@@ -65,6 +65,7 @@ with conn:
                             dest_id integer not null,
                             resp_text text,
                             resp_time integer not null,
+                            read integer not null ,
                             foreign key (source_id) references user(id),
                             foreign key (dest_id) references user(id)
                         )''')

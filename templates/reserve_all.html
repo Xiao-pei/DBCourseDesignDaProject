@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Reserves</title>
+</head>
+<body>
+<p>All reserves:</p>
+{% block content %}
+    {% for reserve in reserves %}
+    <p>
+        Reserve user:<a href={{ url_for('user_profile',user_id=reserve['user_id']) }}> {{ reserve['user_id'] }} </a></p>
+    <p> apply  {{ reserve['address'] }} for {{ reserve['reason'] }}
+        On {{ reserve['date'] }} During: {{ reserve['begin_course'] }} to {{ reserve['end_course'] }}
+    </p>
+    <p>Apply time:  {{ reserve['apply_time'] }} Status: {{ reserve['status'] }} </p>
+    {% endfor %}
+{% endblock %}
+</body>
+</html>
