@@ -61,7 +61,7 @@ def get_time():
 
 
 def time_to_date(t):
-    value = time.localtime(t)
+    value = time.localtime(int(t))
     date = time.strftime('%Y-%m-%d %H:%M', value)
     return date
 
@@ -111,13 +111,20 @@ def register():
 # 查看用户信息
 @app.route('/user/<user_id>', methods=['GET'])
 def user_profile(user_id):
-    cursor = g.db.execute('SELECT * FROM user WHERE id=? ', [user_id])
-    res = cursor.fetchone()
-    if res is None:
-        return jsonify({'code': 404})
+    if session.get('user_id') is not None:
+        cursor = g.db.execute('SELECT * FROM user WHERE id=? ', [user_id])
+        res = cursor.fetchone()
+        if res is None:
+            return render_template('404.html')
+        else:
+            info = {'username': res[1], 'real_name': res[3], 'tel': res[4], 'last_login_time': time_to_date(res[5])}
+            if str(user_id) == str(session.get('user_id')):
+                display_message = 0
+            else:
+                display_message = 1
+            return render_template('user_profile.html', display_message=display_message, info=info, user_id=user_id)
     else:
-        info = {'username': res[1], 'real_name': res[3], 'tel': res[4], 'last_login_time': time_to_date(res[5])}
-        return render_template('user_profile.html', title='Register', username=res[1], info=info)
+        return redirect(url_for('hello'))
 
 
 # 更新用户信息
@@ -316,6 +323,51 @@ def reserve_all():
         return render_template('reserve_all.html', reserves=reserves)
     else:
         redirect(url_for('hello'))
+
+
+# send a message to <user_id>
+@app.route('/send/message/<user_id>', methods=['GET'])
+def send_message(user_id):
+    if session.get('user_id') is not None:
+        username = request.args.get('username')
+        return render_template('new_message.html', username=username, user_id=user_id)
+    else:
+        return redirect(url_for('hello'))
+
+
+@app.route('/message/<user_id>', methods=['GET'])
+def message(user_id):
+    if session.get('user_id') == user_id:
+        return redirect(url_for('hello'))
+    else:
+        return redirect(url_for('hello'))
+
+
+# all sent message of <user_id>
+@app.route('/message/<user_id>/sent', methods=['POST', 'GET'])
+def message_sent(user_id):
+    if str(session.get('user_id')) == user_id:
+        if request.method == 'POST':
+            dest_id = request.form.get('dest_id')
+            resp_text = request.form.get('msg')
+            cursor = g.db.execute('SELECT id FROM user WHERE id=?', [dest_id])
+            if cursor.fetchone() is None:
+                return 'No such user'
+            else:
+                now = int(time.mktime(datetime.datetime.now().timetuple()))
+                g.db.execute('INSERT INTO msg(source_id,dest_id,resp_text,resp_time,read) values(?,?,?,?,?)',
+                             [user_id, dest_id, resp_text, now, 0])
+                return redirect(url_for('message_sent', user_id=user_id))
+        else:
+            cursor = g.db.execute('SELECT dest_id, resp_text, resp_time, read FROM msg WHERE source_id=?', [user_id])
+            result = cursor.fetchall()
+            messages = []
+            for line in result:
+                messages.append({'dest_id': line[0], 'resp_text': line[1], 'read': int(line[3]),
+                                 'resp_time': time_to_date(line[2])})
+            return render_template('message_sent.html', messages=messages)
+    else:
+        return redirect(url_for('hello'))
 
 
 @app.route('/logout')

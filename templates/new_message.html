@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Message</title>
+</head>
+<body>
+{% block content %}
+
+    <h1>New message to <a href={{ url_for('user_profile',user_id=user_id) }}>{{username}}</a></h1>
+<form action={{ url_for('message_sent',user_id=session['user_id'])  }} method="post" novalidate>
+   <dl>
+      <dt>Message:
+      <dd><textarea cols="35" id="msg" name="msg" rows="20"></textarea>
+   </dl>
+    <p><input id="dest_id" name="dest_id" type="hidden" value={{ user_id }}></p>
+    <p><input id="submit" name="submit" type="submit" value="Send"></p>
+
+</form>
+
+{% endblock %}
+
+</body>
+</html>

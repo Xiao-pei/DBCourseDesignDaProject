@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Message Sent</title>
+</head>
+<body>
+<p>All Your Sent Messages:</p>
+{% block content %}
+    {% for message in messages %}
+    <p>Message to user: <a href={{ url_for('user_profile',user_id=message['dest_id']) }}> {{ message['dest_id'] }} </a></p>
+    <p> Sent on :  {{ message['resp_time'] }}</p>
+    <p>Content:  {{ message['resp_text'] }} </p>
+        {% if message['read'] ==0 %}
+        The user has't read the message yet.
+        {% else %}
+        The user has read the message.
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+</body>
+</html>
