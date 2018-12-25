@@ -128,3 +128,19 @@ body{
 .classSplitLine{
     height: 20px;
 }
+
+.campuselecter{
+    width:500px;
+}
+
+.buttonBar{
+    width: 580px;
+}
+.submitButton{
+    background-color: #ca60de;
+    box-shadow: 0 4px 15px #ca60de45;
+}
+
+.submitButton:hover:enabled, .submitButton:active:enabled{
+    box-shadow: 0 4px 15px #ca60de40, 0 9px 37px #ca60de21;
+}

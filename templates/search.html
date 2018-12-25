@@ -30,7 +30,12 @@
                     {% endfor %}
                 </div>
                 {% for error in form.dates.errors %}
-                <span style="color: red;">[{{ error }}]</span>
+                <script>
+                    swal({
+                        title: "{{ error }}",
+                        icon: "error"
+                    })
+                </script>
                 {% endfor %}
 
                 <div class="courseSelecter insideCard">
@@ -99,6 +104,7 @@
                     </div>
                 </div>
                 <div class="campuselecter insideCard">
+                    <h1 class="secondaryTitle">Choose Campus</h1>
                     {% for subfield in form.region %}
                     <tr>
                         <td>{{ subfield }}</td>
@@ -106,7 +112,11 @@
                     </tr>
                     {% endfor %}
                 </div>
-                <p>{{ form.submit() }}</p>
+                <div class="buttonBar">
+                    <div class="buttonContainer">
+                        {{ form.submit(class="bottomButton submitButton") }}
+                    </div>
+                </div>
             </form>
             {% with messages = get_flashed_messages() %}
             {% if messages %}
