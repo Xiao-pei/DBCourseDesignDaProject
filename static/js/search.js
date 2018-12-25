@@ -1,5 +1,12 @@
 $(document).ready(function () {
-    $(".courseIndex").css("pointer-events", "none")
+
+    $(".dateSelecterCell ").unbind("click").click(function(){
+        $(this).addClass("selected")
+        $(this).find(".dateLabel").addClass("light")
+        $(this).find(".dateRadio").prop('checked', true);
+        $(this).siblings().removeClass("selected").find(".dateLabel").removeClass("light")
+    })
+
     $(".courseSelecterCell").hover(function () {
         if ($(this).hasClass("selected") || $(this).hasClass("disabled")) return
         $(this).addClass("avaliable")

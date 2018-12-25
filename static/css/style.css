@@ -65,6 +65,7 @@ button{
     width: -moz-fit-content;
     width: -webkit-fit-content;
     padding: 75px 80px 80px 80px;
+    margin: 30px 0;
     background-color: #fff;
     box-shadow: 0 10px 25px rgba(1,1,1,0.05), 0 30px 50px rgba(1,1,1,0.06);
     text-align: left;
@@ -88,12 +89,36 @@ button{
     
 }
 
+.insideCard{
+    background: #f9f9f9;
+    border-radius: 6px;
+    padding: 20px 40px 30px 40px;
+    margin-top: 24px;
+    transition: all 500ms cubic-bezier(0, 0.5, 0, 1) 0ms;
+}
+
+.insideCard:hover{
+    box-shadow: 0 0px 0px 1px #ffffff, 0 0px 0px 2px #4ec5d84a;
+}
+
 .bigTitle{
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
     font-size: 32px;
     margin: 0 0 24px 0;
+    text-align: left;
+}
+
+.secondaryTitle{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    font-size: 17px;
+    margin: 0px 0px 8px 4px;
+    text-align: left;
+    font-weight: 500;
+    color: #5d5d5d;
 }
 
 .yesButton{
