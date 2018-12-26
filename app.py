@@ -215,7 +215,7 @@ def search_time_result():
         if room_id[0] not in occupied_room_id:
             if room_id[1] in buliding_names:
                 index = buliding_names.index(room_id[1])
-                buildings.get(index).append({'id': room_id[0], 'address': room_id[1],
+                buildings[index].append({'id': room_id[0], 'address': room_id[1],
                                              'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]})
             else:
                 buliding_names.append(room_id[1])
