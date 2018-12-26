@@ -117,12 +117,31 @@ def user_profile(user_id):
         if res is None:
             return render_template('404.html')
         else:
+            tel = None
+            reserves = []
             info = {'username': res[1], 'real_name': res[3], 'tel': res[4], 'last_login_time': time_to_date(res[5])}
             if str(user_id) == str(session.get('user_id')):
                 display_message = 0
             else:
                 display_message = 1
-            return render_template('user_profile.html', display_message=display_message, info=info, user_id=user_id)
+            if str(user_id) == str(session.get('user_id')) or session.get('user_type') == 1:
+                tel = res[4]
+                cursor_reserve = g.db.execute('SELECT * FROM reserve WHERE user_id=? ', [user_id])
+                data = cursor_reserve.fetchall()
+                for line in data:
+                    cursor_room = g.db.execute('SELECT region, address, room_name FROM room WHERE id=? ', [line[2]])
+                    address = cursor_room.fetchone()
+                    begin_time, end_time = time.localtime(line[4]), time.localtime(line[5])
+                    apply_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(line[6]))
+                    date = time.strftime("%Y-%m-%d", begin_time)
+                    begin_course = time_to_course[str(begin_time.tm_hour) + str(begin_time.tm_min)]
+                    end_course = time_to_course[str(end_time.tm_hour) + str(end_time.tm_min)]
+                    reserves.append({'region': address[0], 'address': address[1], 'room_name': address[2],
+                                     'result': line[3], 'begin_course': begin_course, 'end_course': end_course,
+                                     'apply_date': apply_date, 'date': date, 'reason': line[7]})
+
+            return render_template('user_profile.html', display_message=display_message, info=info, user_id=user_id,
+                                   tel=tel, reserves=reserves)
     else:
         return redirect(url_for('hello'))
 
@@ -216,7 +235,7 @@ def search_time_result():
             if room_id[1] in buliding_names:
                 index = buliding_names.index(room_id[1])
                 buildings[index].append({'id': room_id[0], 'address': room_id[1],
-                                             'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]})
+                                        'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]})
             else:
                 buliding_names.append(room_id[1])
                 buildings.append([{'id': room_id[0], 'address': room_id[1],
@@ -332,7 +351,7 @@ def reserve_all():
 # send a message to <user_id>
 @app.route('/send/message/<user_id>', methods=['GET'])
 def send_message(user_id):
-    if session.get('user_id') is not None:
+    if session.get('user_id') is not None and session.get('user_id') != int(user_id):
         username = request.args.get('username')
         return render_template('new_message.html', username=username, user_id=user_id)
     else:

@@ -4,8 +4,29 @@
 <p>username: <b>{{ info.username }}</b></p>
     <p>real name: <b>{{ info.real_name }}</b></p>
     <p>Last login: <b>{{ info.last_login_time }}</b></p>
-    {% if display_message == 1 %}
+    {% if tel  %}
+      <p>Tel: <b>{{ tel }}</b></p>
+    {% endif %}
+    {% if display_message == 1 %} <!--用户自己看不到给自己发信息的链接-->
         <p>Send a Message <a href={{ url_for('send_message',user_id=user_id,username=info.username) }}> Click here </a></p>
+    {% endif %}
+
+    {% if display_message ==0 or session['user_type']==1 %} <!--只有管理员和用户自己才能看到记录-->
+    <p>{{ info.username }}'s Reserves:</p>
+    {% for reserve in reserves %}
+        <p> apply {{ reserve['room_name'] }} in {{ reserve['region'] }}{{ reserve['address'] }} for <b>{{ reserve['reason'] }}</b>
+        On {{ reserve['date'] }} During: {{ reserve['begin_course'] }} to {{ reserve['end_course'] }}
+    </p>
+    <p>Apply time:  {{ reserve['apply_date'] }} , Status:
+    {% if reserve['result']==1 %}
+        <b>Approved</b>
+    {% elif reserve['result']==0 %}
+        <b>Waiting</b>
+    {% else %}
+        <b>Refused</b>
+    {% endif %}
+    </p>
+    {% endfor %}
     {% endif %}
 
 {% endblock %}
