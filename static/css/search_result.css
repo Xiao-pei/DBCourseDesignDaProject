@@ -56,7 +56,7 @@ span{
     vertical-align: middle;
     display: inline-block;
     font-weight: 500;
-    color: #949494;
+    color: #c7c7c7;
     margin: 0;
 
 }
@@ -78,7 +78,6 @@ span{
     line-height: 10px;
     height: 10px;
 }
-
 
 .nextIndicator.hidden{
     opacity: 0;

@@ -66,7 +66,7 @@ $(document).ready(function () {
         } else {
             herfURL += "@30.5580034,103.9997657,16z"
         }
-        window.open(herfURL);
+        window.open(herfURL, "_blank");
     })
 })
 
