@@ -6,6 +6,9 @@
 </head>
 <body>
 {% block content %}
+    {% if empty == 1 %}
+   <p>Nothing here!</p>
+    {% else %}
     {% for reserve in reserves %}
 <form action={{ url_for('reserve_management') }} method="post" novalidate>
     <p>
@@ -19,6 +22,7 @@
 <p><input id="submit" name="submit" type="submit" value="Disapprove"></p>
 </form>
     {% endfor %}
+    {% endif %}
     <a href={{ url_for('reserve_all') }}> Check out all reserve recodes </a>
 {% endblock %}
 </body>

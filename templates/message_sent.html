@@ -5,6 +5,7 @@
     <title>Message Sent</title>
 </head>
 <body>
+<a href="{{ url_for('user_profile',user_id = session['user_id']) }}">My profile</a>
 <p>All Your Sent Messages:</p>
 {% block content %}
     {% for message in messages %}

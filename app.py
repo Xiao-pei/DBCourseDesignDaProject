@@ -81,7 +81,7 @@ def login():
                 # 更新最后登陆时间
                 g.db.execute('UPDATE user SET last_login_time = ? '
                              'WHERE username=? AND pass_hash=?', [get_time(), name, md5_user_psw(name, password)])
-                return jsonify({'code': 200})  # 成功
+                return redirect(url_for('user_profile', user_id=session.get('user_id')))  # 成功
             flash('用户名或密码错误')  # 否则form内容有错
     return render_template('login.html', title='Sign In', form=form)
 
@@ -169,6 +169,9 @@ def search_time():
 def search_time_result():
     date = request.form.get('dates')
     region = request.form.get('region')
+    if date is None:
+        flash(message='请选日期')
+        return redirect(url_for('search_time'))
     checkboxes, i = [], 1
     begin, end = -1, -1
     # i 代表第i节课
@@ -274,8 +277,9 @@ def reserve_management():
         if request.method == 'GET':
             cursor_reserves = g.db.execute('SELECT * FROM reserve WHERE result=0')
             res = cursor_reserves.fetchall()
-            reserves = []
+            reserves, empty = [], 1
             for line in res:
+                empty = 0
                 cursor = g.db.execute('SELECT region,address,room_name FROM room WHERE id=?', [line[2]])
                 room_info = cursor.fetchone()
                 begin_time, end_time = time.localtime(line[4]), time.localtime(line[5])
@@ -287,7 +291,7 @@ def reserve_management():
                 reserves.append({'user_id': line[1], 'apply_time': apply_date, 'date': date,
                                  'begin_course': begin_course, 'end_course': end_course, 'address': address,
                                  'reason': line[7], 'reserve_id': line[0]})
-            return render_template('reserve_management.html', reserves=reserves)
+            return render_template('reserve_management.html', reserves=reserves, empty=empty)
         else:
             reserve_id = request.form.get('reserve_id')
             if request.form.get('submit') == 'Approve':
