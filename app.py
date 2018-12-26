@@ -199,6 +199,9 @@ def search_time_result():
     if date is None:
         flash(message='Please choose date of your reservation.')
         return redirect(url_for('search_time'))
+    if region is None:
+        flash(message='Please choose region of your reservation.')
+        return redirect(url_for('search_time'))
     checkboxes, i = [], 1
     begin, end = -1, -1
     # i 代表第i节课
@@ -206,7 +209,7 @@ def search_time_result():
         tmpresult = request.form.get('course' + str(i)) is not None
         checkboxes.append(tmpresult)
         if begin != -1 and end != -1 and tmpresult is True:
-            flash(message='You cannot select courses lick this.')
+            flash(message='You cannot select courses like this.')
             return redirect(url_for('search_time'))
         if tmpresult is False and begin != -1 and end == -1:
             end = i - 1
