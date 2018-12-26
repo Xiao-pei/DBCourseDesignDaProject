@@ -4,13 +4,28 @@
     }
 }
 
+body{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    background: #e9fcff;
+}
+
 span{
-    transition: all 500ms cubic-bezier(0, 0.5, 0, 1) 0ms;
+    transition: all 300ms cubic-bezier(0.15, 0.43, 0.44, 1) 0ms;
+}
+
+.secondaryTitle{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.insideCard{
+    padding: 25px 30px 35px 30px;
 }
 
 .classRoomContainer{
     width: 845px;
-
     font-size: 0px;
 } 
 
@@ -22,7 +37,11 @@ span{
     font-size: 0px;
     margin: 5px 4px;
     border-radius: 5px;
+    cursor: pointer;
+}
 
+.classRoomButton:hover{
+    box-shadow: 0 0px 0px 1px #ffffff, 0 0px 0px 2px #4ec5d8b5;
 }
 
 .classRoomButton.wide{
@@ -50,6 +69,7 @@ span{
     font-weight: 600;
     color: #696969;
     margin: 0px 10px 0px 20px;
+    cursor: pointer;
 }
 
 .roomCapacity{
@@ -60,13 +80,14 @@ span{
 }
 
 
-
 .nextIndicator.hidden{
+    opacity: 0;
     width: 0;
-    overflow: hidden;
+    color: #949494;
 }
 
 .nextIndicator{
+    opacity: 1;
+    color: #4ec5d8;
     width: 24px;
-    overflow: hidden;
 }

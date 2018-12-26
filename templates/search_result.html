@@ -17,12 +17,12 @@
 <body>
     <div class="overlay">
         <div class="card">
+            <h1 class="bigTitle">Avaliable Classrooms</h1>
             {% for building in buildings %}
             <div class="insideCard classRoomContainer">
                 <p class="secondaryTitle">{{ buliding_names[buildings.index(building)] }}:</p>
                 {% for room in building %}
-                <span class="classRoomButton wide">
-
+                <span class="classRoomButton wide" data-herf="{{url_for('reserve',room_id=room['id'],begin=begin,end=end,date=date)}}">
                     <label class="buttonInnerSpan roomNameLabel">
                         {{room['room_name']}}
                     </label>
@@ -41,7 +41,7 @@
                     {% if room['multimedia'] == 1 %}
                     <span class="buttonInnerSpan icon">
                         <i class="material-icons">
-                            airplay
+                            cast
                         </i>
                     </span>
 
