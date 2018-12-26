@@ -170,7 +170,7 @@ def search_time_result():
     date = request.form.get('dates')
     region = request.form.get('region')
     if date is None:
-        flash(message='请选日期')
+        flash(message='Please choose date of your reservation.')
         return redirect(url_for('search_time'))
     checkboxes, i = [], 1
     begin, end = -1, -1
@@ -179,7 +179,7 @@ def search_time_result():
         tmpresult = request.form.get('course' + str(i)) is not None
         checkboxes.append(tmpresult)
         if begin != -1 and end != -1 and tmpresult is True:
-            flash(message='你这样节次选择不行')
+            flash(message='You cannot select courses lick this.')
             return redirect(url_for('search_time'))
         if tmpresult is False and begin != -1 and end == -1:
             end = i - 1
@@ -187,7 +187,7 @@ def search_time_result():
             begin = i
         i = i + 1
     if begin == -1 and end == -1:
-        flash(message='请选节次')
+        flash(message='Please select courses.')
         return redirect(url_for('search_time'))
     begin_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[begin - 1][0]
     end_date = datetime.datetime.fromtimestamp(int(date)) + course_choices[end - 1][0]
@@ -215,7 +215,7 @@ def search_time_result():
         if room_id[0] not in occupied_room_id:
             if room_id[1] in buliding_names:
                 index = buliding_names.index(room_id[1])
-                buildings.get(index).append({'id': room_id[0], 'address': room_id[1],
+                buildings[index].append({'id': room_id[0], 'address': room_id[1],
                                              'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]})
             else:
                 buliding_names.append(room_id[1])
