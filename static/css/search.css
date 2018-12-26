@@ -26,7 +26,6 @@ body{
 }
 
 .courseSelecterCell.selected, .courseSelecterCell.selected:hover{
-    /*box-shadow: 0 5px 13px #00000017*/
     box-shadow: 0 5px 13px #4ec5d84a;
 }
 
@@ -151,7 +150,6 @@ body{
 }
 
 .campusSelecterCell.selected, .campusSelecterCell.selected:hover{
-    /*box-shadow: 0 5px 13px #00000017*/
     background: #4ec5d8;
     box-shadow: 0 5px 13px #4ec5d84a;
 }
@@ -210,7 +208,7 @@ body{
 
 .locationButton.light:hover{
     background: #8ad9e5;
-    box-shadow: 0 0px 0px 1px #4ec5d8, 0 0px 0px 2px #67cdde;
+    box-shadow: 0 0px 0px 1px #4ec5d8, 0 0px 0px 2px #9ddfe9;
 }
 
 .locationIcon{

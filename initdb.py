@@ -12,7 +12,7 @@ conn = sqlite3.connect('test.db')
 
 with conn:
     cur = conn.cursor()
-    # id 主键；username 用户名；pass_hash md5(username+password)； real_name 真实姓名；tel 电话；type 0为用户 1 为管理员 -1为被锁定用户
+    # id 主键；username 用户名；pass_hash md5(username+password)； real_name 真实姓名；tel 电话；type 0为用户 1 为管理员
     cur.execute('''create table user 
                         (
                             id integer primary key autoincrement,
@@ -75,18 +75,38 @@ with conn:
     # password: xiaopc
     cur.execute('''insert into user(username, pass_hash, real_name,tel,last_login_time,type)
     values (\'xiaopc\', \'5aa8a6c678dbb5435d01f813c3dac7cc\', \'Xiaopc\',666,100, 0)''')
+
     cur.execute('''insert into room (region,address,room_name,size,multimedia)
-    values (\'江安\', \'一教A座\',\'A201\', 60, 1)''')
+    values (\'江安\', \'Block A of Teaching Building 1\',\'A201\', 60, 1)''')
     cur.execute('''insert into room (region,address,room_name,size,multimedia)
-    values (\'江安\', \'一教A座\',\'A301\', 70, 1)''')
+    values (\'江安\', \'Block A of Teaching Building 1\',\'A301\', 70, 0)''')
     cur.execute('''insert into room (region,address,room_name,size,multimedia)
-    values (\'江安\', \'一教A座\',\'A302\', 50, 1)''')
+    values (\'江安\', \'Block A of Teaching Building 1\',\'A302\', 50, 0)''')
     cur.execute('''insert into room (region,address,room_name,size,multimedia)
-    values (\'江安\', \'一教C座\',\'C701\', 60, 1)''')
+    values (\'江安\', \'Block A of Teaching Building 1\',\'A303\', 60, 1)''')
     cur.execute('''insert into room (region,address,room_name,size,multimedia)
-    values (\'江安\', \'一教C座\',\'C702\', 48, 1)''')
+    values (\'江安\', \'Block A of Teaching Building 1\',\'A401\', 70, 1)''')
     cur.execute('''insert into room (region,address,room_name,size,multimedia)
-    values (\'江安\', \'一教C座\',\'C703\', 60, 1)''')
+    values (\'江安\', \'Block A of Teaching Building 1\',\'A402\', 50, 1)''')
+
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'Block C of Teaching Building 1\',\'C701\', 60, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'Block C of Teaching Building 1\',\'C702\', 48, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'Block C of Teaching Building 1\',\'C703\', 60, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'Block C of Teaching Building 1\',\'C704\', 60, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'Block C of Teaching Building 1\',\'C601\', 48, 0)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'Block C of Teaching Building 1\',\'C602\', 60, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'Block C of Teaching Building 1\',\'C603\', 60, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'Block C of Teaching Building 1\',\'C501\', 48, 0)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'Block C of Teaching Building 1\',\'C502\', 60, 1)''')
     cur.execute('''insert into occupied_room (room_id,start_time,end_time) values 
     (1,0,1)''')
 

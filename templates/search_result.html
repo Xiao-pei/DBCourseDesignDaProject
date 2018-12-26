@@ -1,24 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/materialIcon.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/search_result.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/alert.css')}}">
+    <script src='{{url_for('static', filename='js/jquery-3.3.1.min.js')}}'></script>
+    <script src='{{url_for('static', filename='js/jquery.easing.1.3.js')}}'></script>
+    <script src='{{url_for('static', filename='js/search_result.js')}}'></script>
+    <script src='{{url_for('static', filename='js/sweetalert.min.js')}}'></script>
 </head>
+
 <body>
-{% for building in buildings %}
-    <p>{{ buliding_names[buildings.index(building)] }}:</p>
-{% for room in building %}
-<p>
-    <a href={{ url_for('reserve',room_id=room['id'],begin=begin,end=end,date=date) }}> {{ room['room_name'] }} </a>
-    Size : {{ room['size'] }}
-    Multimedia :
-    {% if room['multimedia'] == 1%}
-        available
-    {% else %}
-        unavailable
-    {% endif %}
-</p>
-{% endfor %}
-{% endfor %}
+    <div class="overlay">
+        <div class="card">
+            {% for building in buildings %}
+            <div class="insideCard classRoomContainer">
+                <p class="secondaryTitle">{{ buliding_names[buildings.index(building)] }}:</p>
+                {% for room in building %}
+                <span class="classRoomButton wide">
+
+                    <label class="buttonInnerSpan roomNameLabel">
+                        {{room['room_name']}}
+                    </label>
+
+                    <span class="buttonInnerSpan icon">
+                        <i class="material-icons">
+                            people
+                        </i>
+
+                        <span class="buttonInnerSpan roomCapacity">
+                            {{ room['size'] }}
+                        </span>
+                    </span>
+
+
+                    {% if room['multimedia'] == 1 %}
+                    <span class="buttonInnerSpan icon">
+                        <i class="material-icons">
+                            airplay
+                        </i>
+                    </span>
+
+                    {% else %}
+
+                    {% endif %}
+
+                    <span class="buttonInnerSpan nextIndicator hidden">
+                        <i class="material-icons">
+                            chevron_right
+                        </i>
+                    </span>
+                </span>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </body>
+
 </html>

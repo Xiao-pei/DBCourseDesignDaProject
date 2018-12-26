@@ -1,20 +1,20 @@
 @font-face {
     font-family: 'SF Pro Display';
-    src: "{{url_for('static', filename='css/fonts/SF-Pro-Display-Regular.ttf')}}";
+    src: url("/static/css/fonts/SF-Pro-Display-Regular.ttf");
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'SF Pro Display';
-    src: "{{url_for('static', filename='css/fonts/SF-Pro-Display-Medium.otf')}}";
+    src: url("/static/css/fonts/SF-Pro-Display-Medium.ttf");
     font-weight: 500;
     font-style: medium;
 }
 
 @font-face {
     font-family: 'SF Pro Display';
-    src: "{{url_for('static', filename='css/fonts/SF-Pro-Display-Bold.ttf')}}";
+    src: url("/static/css/fonts/SF-Pro-Display-Bold.ttf");
     font-weight: 600;
     font-style: bold;
 }
@@ -75,6 +75,12 @@ button{
     vertical-align: middle;
     pointer-events: auto;
     box-sizing: border-box;
+}
+
+@media (max-width: 800px){
+    .card {
+        width: calc(100% - 20px);
+    }
 }
 
 .cardBackground{
