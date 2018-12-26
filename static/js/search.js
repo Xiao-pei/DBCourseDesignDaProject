@@ -1,7 +1,7 @@
 var selectedClassNum = 0
 $(document).ready(function () {
 
-    $(".dateSelecterCell ").unbind("click").click(function(){
+    $(".dateSelecterCell ").unbind("click").click(function () {
         $(this).addClass("selected")
         $(this).find(".dateLabel").addClass("light")
         $(this).find(".dateRadio").prop('checked', true);
@@ -45,7 +45,7 @@ $(document).ready(function () {
         }
     })
 
-    $(".campusSelecterCell ").unbind("click").click(function (){
+    $(".campusSelecterCell ").unbind("click").click(function () {
         $(this).addClass("selected")
         $(this).siblings().removeClass("selected").find(".campusLabel").removeClass("light")
         $(this).siblings().find(".locationButton").removeClass("light")
@@ -56,12 +56,12 @@ $(document).ready(function () {
         $(this).find(".campusRadio").prop('checked', true);
     })
 
-    $(".locationButton").unbind("click").click(function (e){
+    $(".locationButton").unbind("click").click(function (e) {
         e.stopPropagation();
         var herfURL = "https://www.google.com/maps/"
-        if ($(this).attr('id') == "locate0"){
+        if ($(this).attr('id') == "locate0") {
             herfURL += "@30.6301606,104.0844545,16z"
-        } else if ($(this).attr('id') == "locate1"){
+        } else if ($(this).attr('id') == "locate1") {
             herfURL += "@30.6399605,104.0712453,17z"
         } else {
             herfURL += "@30.5580034,103.9997657,16z"
@@ -70,11 +70,11 @@ $(document).ready(function () {
     })
 })
 
-function refreshClassButtons(){
-    if (selectedClassNum == 0){
+function refreshClassButtons() {
+    if (selectedClassNum == 0) {
         $(".courseSelecterCell ").removeClass("disabled")
         return
-    } 
+    }
     $(".courseSelecterCell").addClass("disabled")
     $(".courseSelecterCell.selected").last().removeClass("disabled").nextAll(".courseSelecterCell.disabled").eq(0).removeClass("disabled")
     $(".courseSelecterCell.selected").first().removeClass("disabled").prevAll(".courseSelecterCell.disabled").eq(0).removeClass("disabled")
