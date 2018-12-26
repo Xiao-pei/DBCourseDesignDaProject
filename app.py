@@ -215,8 +215,8 @@ def search_time_result():
         if room_id[0] not in occupied_room_id:
             if room_id[1] in buliding_names:
                 index = buliding_names.index(room_id[1])
-                buildings.get(index).append({'id': room_id[0], 'address': room_id[1],
-                                             'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]})
+                buildings[index].append({'id': room_id[0], 'address': room_id[1],
+                                         'room_name': room_id[2], 'size': room_id[3], 'multimedia': room_id[4]})
             else:
                 buliding_names.append(room_id[1])
                 buildings.append([{'id': room_id[0], 'address': room_id[1],
@@ -261,7 +261,7 @@ def reserve_result():
                                   'AND end_time>=?) AND room_id=?',
                                   [begin_time, end_time, begin_time, end_time, begin_time, end_time, room_id])
     if cursor_reserve.fetchone() is None and cursor_occupied_room.fetchone() is None:
-        now = int(time.mktime(datetime.datetime.now().timetuple()))
+        now = int(get_time())
         g.db.execute('insert into reserve(user_id, room_id, result, start_time, end_time,'
                      'apply_time, reason)values(?,?,?,?,?,?,?)',
                      [session.get('user_id'), room_id, 0, begin_time,
@@ -341,8 +341,23 @@ def send_message(user_id):
 
 @app.route('/message/<user_id>', methods=['GET'])
 def message(user_id):
-    if session.get('user_id') == user_id:
-        return redirect(url_for('hello'))
+    if str(session.get('user_id')) == user_id:
+        cursor = g.db.execute('SELECT source_id, resp_text, resp_time, read, id FROM msg WHERE dest_id=?', [user_id])
+        result = cursor.fetchall()
+        msg_id = request.args.get('msg_id')
+        message_view = None
+        messages = []
+        for line in result:
+            if str(line[4]) == msg_id:
+                message_view = {'msg_id': line[4], 'source_id': line[0], 'text': line[1],
+                                'resp_time': time_to_date(line[2])}
+                g.db.execute('UPDATE msg SET read = ? WHERE id=?', [1, msg_id])
+                messages.append({'msg_id': line[4], 'source_id': line[0], 'preview': line[1][0:12], 'read': 1,
+                                'resp_time': time_to_date(line[2])})
+            else:
+                messages.append({'msg_id': line[4], 'source_id': line[0], 'preview': line[1][0:12],
+                                 'read': int(line[3]), 'resp_time': time_to_date(line[2])})
+        return render_template('message.html', messages=messages, message_view=message_view)
     else:
         return redirect(url_for('hello'))
 
@@ -358,7 +373,7 @@ def message_sent(user_id):
             if cursor.fetchone() is None:
                 return 'No such user'
             else:
-                now = int(time.mktime(datetime.datetime.now().timetuple()))
+                now = int(get_time())
                 g.db.execute('INSERT INTO msg(source_id,dest_id,resp_text,resp_time,read) values(?,?,?,?,?)',
                              [user_id, dest_id, resp_text, now, 0])
                 return redirect(url_for('message_sent', user_id=user_id))

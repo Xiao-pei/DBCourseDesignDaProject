@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messages</title>
+</head>
+<body>
+{% block content %}
+
+    <h1>Your messages</h1>
+
+    {% if message_view is none %}
+        choose a message to display
+    {% else %}
+        <p>Message from <a href={{ url_for('user_profile',user_id=message_view['source_id']) }}>{{ message_view['source_id'] }}</a> </p>
+        <p>{{ message_view['text'] }}</p>
+    {% endif %}
+   <dl>
+   {% for message in messages %}
+      <dt>Message from : <a href={{ url_for('user_profile',user_id=message['source_id']) }}> {{ message['source_id'] }} </a>
+      {{ message['resp_time'] }}</dt>
+      <dd><a href={{ url_for('message',user_id=session['user_id'],msg_id=message['msg_id']) }}> {{ message['preview'] }} </a>
+        {% if message['read'] == 0 %}
+            You haven't read yet.
+       {% else %}
+            You have read the message.
+       {% endif %}
+    {% endfor %}
+   </dl>
+
+
+{% endblock %}
+
+</body>
+</html>
