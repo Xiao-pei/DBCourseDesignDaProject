@@ -76,7 +76,17 @@ with conn:
     cur.execute('''insert into user(username, pass_hash, real_name,tel,last_login_time,type)
     values (\'xiaopc\', \'5aa8a6c678dbb5435d01f813c3dac7cc\', \'Xiaopc\',666,100, 0)''')
     cur.execute('''insert into room (region,address,room_name,size,multimedia)
-    values (\'江安\', \'一教C座\',\'C701\', 60,1)''')
+    values (\'江安\', \'一教A座\',\'A201\', 60, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'一教A座\',\'A301\', 70, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'一教A座\',\'A302\', 50, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'一教C座\',\'C701\', 60, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'一教C座\',\'C702\', 48, 1)''')
+    cur.execute('''insert into room (region,address,room_name,size,multimedia)
+    values (\'江安\', \'一教C座\',\'C703\', 60, 1)''')
     cur.execute('''insert into occupied_room (room_id,start_time,end_time) values 
     (1,0,1)''')
 

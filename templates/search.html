@@ -106,10 +106,10 @@
                 <div class="campuselecter insideCard">
                     <h1 class="secondaryTitle">Choose Campus</h1>
                     {% for subfield in form.region %}
-                    <tr>
-                        <td>{{ subfield }}</td>
-                        <td>{{ subfield.label }}</td>
-                    </tr>
+                    <div class="campusSelecterCell">
+                        {{ subfield(class="campusCheckbox") }}
+                        {{ subfield.label(class="campusLabel") }}
+                    </div>
                     {% endfor %}
                 </div>
                 <div class="buttonBar">
