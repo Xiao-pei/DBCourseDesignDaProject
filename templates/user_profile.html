@@ -1,4 +1,19 @@
 {% block content %}
+     {% if display_message == 0 %} <!--只有用户自己看到-->
+         {% if have_new_message == 1 %}
+                <p> <a href={{ url_for('message',user_id=user_id) }}> You have NEW messages </a></p>
+         {% else %}
+                <p> <a href={{ url_for('message',user_id=user_id) }}> My messages </a></p>
+         {% endif %}
+         {% if session['user_type'] == 1 %}
+             <p><a href={{ url_for('reserve_all') }}> Reservations of all users </a> </p>
+             {% if have_new_reserve == 0 %}
+                <p><a href={{ url_for('reserve_management') }}> Manage user reservations </a></p>
+             {% else %}
+                <p><a href={{ url_for('reserve_management') }}> Have new user reservations!! </a></p>
+             {% endif %}
+         {% endif %}
+    {% endif %}
     <h1>Welcome to the profile of {{info.username}}</h1>
 
 <p>username: <b>{{ info.username }}</b></p>
@@ -7,8 +22,19 @@
     {% if tel  %}
       <p>Tel: <b>{{ tel }}</b></p>
     {% endif %}
-    {% if display_message == 1 %} <!--用户自己看不到给自己发信息的链接-->
+    {% if display_message == 1 %} <!--自己看不到给自己发信息的链接-->
         <p>Send a Message <a href={{ url_for('send_message',user_id=user_id,username=info.username) }}> Click here </a></p>
+    {% endif %}
+
+    {% if session['user_type']==1 and display_message == 1%}
+    <form action={{ url_for('lock')}} method="post" novalidate>
+        <p><input id="user_id" name="user_id" type="hidden" value={{ user_id }}></p>
+        {% if info.user_type == -1 %}
+         <p><input id="submit" name="submit" type="submit" value="Unlock user"></p>
+        {% else %}
+        <p><input id="submit" name="submit" type="submit" value="Lock user"></p>
+        {% endif %}
+    </form>
     {% endif %}
 
     {% if display_message ==0 or session['user_type']==1 %} <!--只有管理员和用户自己才能看到记录-->

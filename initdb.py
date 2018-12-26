@@ -12,7 +12,7 @@ conn = sqlite3.connect('test.db')
 
 with conn:
     cur = conn.cursor()
-    # id 主键；username 用户名；pass_hash md5(username+password)； real_name 真实姓名；tel 电话；type 0为用户 1 为管理员
+    # id 主键；username 用户名；pass_hash md5(username+password)； real_name 真实姓名；tel 电话；type 0为用户 1 为管理员 -1为被锁定用户
     cur.execute('''create table user 
                         (
                             id integer primary key autoincrement,

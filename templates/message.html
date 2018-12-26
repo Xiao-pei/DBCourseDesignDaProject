@@ -17,7 +17,7 @@
     {% endif %}
    <dl>
    {% for message in messages %}
-      <dt>Message from : <a href={{ url_for('user_profile',user_id=message['source_id']) }}> {{ message['source_id'] }} </a>
+      <dt>Message from : <a href={{ url_for('user_profile',user_id=message['source_id']) }}> {{ message['username'] }} </a>
       {{ message['resp_time'] }}</dt>
       <dd><a href={{ url_for('message',user_id=session['user_id'],msg_id=message['msg_id']) }}> {{ message['preview'] }} </a>
         {% if message['read'] == 0 %}

@@ -118,8 +118,10 @@ def user_profile(user_id):
             return render_template('404.html')
         else:
             tel = None
+            new_message, new_reserve = 0, 0
             reserves = []
-            info = {'username': res[1], 'real_name': res[3], 'tel': res[4], 'last_login_time': time_to_date(res[5])}
+            info = {'username': res[1], 'real_name': res[3], 'tel': res[4], 'last_login_time': time_to_date(res[5]),
+                    'user_type': res[6]}
             if str(user_id) == str(session.get('user_id')):
                 display_message = 0
             else:
@@ -128,7 +130,7 @@ def user_profile(user_id):
                 tel = res[4]
                 cursor_reserve = g.db.execute('SELECT * FROM reserve WHERE user_id=? ', [user_id])
                 data = cursor_reserve.fetchall()
-                for line in data:
+                for line in data:  # 该用户的预约记录
                     cursor_room = g.db.execute('SELECT region, address, room_name FROM room WHERE id=? ', [line[2]])
                     address = cursor_room.fetchone()
                     begin_time, end_time = time.localtime(line[4]), time.localtime(line[5])
@@ -139,9 +141,15 @@ def user_profile(user_id):
                     reserves.append({'region': address[0], 'address': address[1], 'room_name': address[2],
                                      'result': line[3], 'begin_course': begin_course, 'end_course': end_course,
                                      'apply_date': apply_date, 'date': date, 'reason': line[7]})
-
+                cursor_msg = g.db.execute('SELECT source_id FROM msg WHERE dest_id=? and read=0', [user_id])
+                if cursor_msg.fetchone() is not None:
+                    new_message = 1
+                if session.get('user_type') == 1:  # 若是管理员，查询是否有未处理的预约请求
+                    cursor_msg = g.db.execute('SELECT user_id FROM reserve WHERE result=0')
+                    if cursor_msg.fetchone() is not None:
+                        new_reserve = 1
             return render_template('user_profile.html', display_message=display_message, info=info, user_id=user_id,
-                                   tel=tel, reserves=reserves)
+                                   tel=tel, reserves=reserves, have_new_message=new_message, have_new_reserve=new_reserve)
     else:
         return redirect(url_for('hello'))
 
@@ -177,7 +185,7 @@ def user_profile_update(user_id):
 @app.route('/search/time', methods=['GET'])
 def search_time():
     # 已登陆显示搜索页，未登录跳转回到开始页
-    if session.get('user_id') is not None:
+    if session.get('user_id') is not None and session.get('user_type') != -1:
         form = SearchForm()
         return render_template('search.html', form=form)
     else:
@@ -247,7 +255,7 @@ def search_time_result():
 
 @app.route('/reserve/<room_id>', methods=['GET'])
 def reserve(room_id):
-    if session.get('user_id') is not None:
+    if session.get('user_id') is not None and session.get('user_type') != -1:
         if request.method == 'GET':
             date, begin, end = int(request.args.get('date')), int(request.args.get('begin')), int(
                 request.args.get('end'))
@@ -267,27 +275,30 @@ def reserve(room_id):
 
 @app.route('/reserve/result', methods=['POST'])
 def reserve_result():
-    begin_time, end_time = request.form.get('begin_time'), request.form.get('end_time')
-    room_id = request.form.get('room_id')
-    reason = request.form.get('reason')
-    cursor_occupied_room = g.db.execute('SELECT DISTINCT  room_id FROM occupied_room WHERE '
-                                        '(start_time>? AND start_time<? OR end_time>? AND end_time<? OR start_time<=?'
-                                        'AND end_time>=? )AND room_id=?',
-                                        [begin_time, end_time, begin_time, end_time, begin_time, end_time,
-                                         room_id])
-    cursor_reserve = g.db.execute('SELECT DISTINCT  room_id FROM reserve WHERE '
-                                  '(start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<=? '
-                                  'AND end_time>=?) AND room_id=?',
-                                  [begin_time, end_time, begin_time, end_time, begin_time, end_time, room_id])
-    if cursor_reserve.fetchone() is None and cursor_occupied_room.fetchone() is None:
-        now = int(get_time())
-        g.db.execute('insert into reserve(user_id, room_id, result, start_time, end_time,'
-                     'apply_time, reason)values(?,?,?,?,?,?,?)',
-                     [session.get('user_id'), room_id, 0, begin_time,
-                      end_time, now, reason])
-        return jsonify({'code': 200})
+    if session.get('user_id') is not None and session.get('user_type') != -1:
+        begin_time, end_time = request.form.get('begin_time'), request.form.get('end_time')
+        room_id = request.form.get('room_id')
+        reason = request.form.get('reason')
+        cursor_occupied_room = g.db.execute('SELECT DISTINCT  room_id FROM occupied_room WHERE '
+                                            '(start_time>? AND start_time<? OR end_time>? AND end_time<? OR '
+                                            'start_time<=?AND end_time>=? )AND room_id=?',
+                                            [begin_time, end_time, begin_time, end_time, begin_time, end_time,
+                                             room_id])
+        cursor_reserve = g.db.execute('SELECT DISTINCT  room_id FROM reserve WHERE '
+                                      '(start_time>? AND start_time <? OR end_time>? AND end_time<? OR start_time<=? '
+                                      'AND end_time>=?) AND room_id=?',
+                                      [begin_time, end_time, begin_time, end_time, begin_time, end_time, room_id])
+        if cursor_reserve.fetchone() is None and cursor_occupied_room.fetchone() is None:
+            now = int(get_time())
+            g.db.execute('insert into reserve(user_id, room_id, result, start_time, end_time,'
+                         'apply_time, reason)values(?,?,?,?,?,?,?)',
+                         [session.get('user_id'), room_id, 0, begin_time,
+                          end_time, now, reason])
+            return redirect(url_for('user_profile', user_id=session.get('user_id')))
+        else:
+            return redirect(url_for('search_time'))
     else:
-        return redirect(url_for('search_time'))
+        return redirect(url_for('hello'))
 
 
 @app.route('/reserve/management', methods=['POST', 'GET'])
@@ -322,6 +333,7 @@ def reserve_management():
         return redirect(url_for('hello'))
 
 
+# 管理员查看所有消息
 @app.route('/reserve/all', methods=['GET'])
 def reserve_all():
     if session['user_type'] == 1:
@@ -367,15 +379,17 @@ def message(user_id):
         message_view = None
         messages = []
         for line in result:
+            username_cursor = g.db.execute('SELECT username FROM user WHERE id=?', [line[0]])
+            username = username_cursor.fetchone()[0]
             if str(line[4]) == msg_id:
                 message_view = {'msg_id': line[4], 'source_id': line[0], 'text': line[1],
                                 'resp_time': time_to_date(line[2])}
                 g.db.execute('UPDATE msg SET read = ? WHERE id=?', [1, msg_id])
                 messages.append({'msg_id': line[4], 'source_id': line[0], 'preview': line[1][0:12], 'read': 1,
-                                'resp_time': time_to_date(line[2])})
+                                'resp_time': time_to_date(line[2]), 'username': username})
             else:
                 messages.append({'msg_id': line[4], 'source_id': line[0], 'preview': line[1][0:12],
-                                 'read': int(line[3]), 'resp_time': time_to_date(line[2])})
+                                 'read': int(line[3]), 'resp_time': time_to_date(line[2]), 'username': username})
         return render_template('message.html', messages=messages, message_view=message_view)
     else:
         return redirect(url_for('hello'))
@@ -406,6 +420,19 @@ def message_sent(user_id):
             return render_template('message_sent.html', messages=messages)
     else:
         return redirect(url_for('hello'))
+
+
+@app.route('/lock', methods=['POST'])
+def lock():
+    if session.get('user_type') == 1:
+        user_id = request.form.get('user_id')
+        action = request.form.get('submit')
+        if action == 'Unlock user':
+            g.db.execute('UPDATE user SET type=0 WHERE id=?', [user_id])
+        else:
+            g.db.execute('UPDATE user SET type=-1 WHERE id=?', [user_id])
+        return redirect(url_for('user_profile', user_id=user_id))
+    return url_for('hello')
 
 
 @app.route('/logout')
