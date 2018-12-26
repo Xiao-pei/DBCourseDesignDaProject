@@ -44,6 +44,30 @@ $(document).ready(function () {
             }
         }
     })
+
+    $(".campusSelecterCell ").unbind("click").click(function (){
+        $(this).addClass("selected")
+        $(this).siblings().removeClass("selected").find(".campusLabel").removeClass("light")
+        $(this).siblings().find(".locationButton").removeClass("light")
+        $(this).siblings().find(".locationIcon").removeClass("light")
+        $(this).find(".campusLabel").addClass("light")
+        $(this).find(".locationButton").addClass("light")
+        $(this).find(".locationIcon").addClass("light")
+        $(this).find(".campusRadio").prop('checked', true);
+    })
+
+    $(".locationButton").unbind("click").click(function (e){
+        e.stopPropagation();
+        var herfURL = "https://www.google.com/maps/"
+        if ($(this).attr('id') == "locate0"){
+            herfURL += "@30.6301606,104.0844545,16z"
+        } else if ($(this).attr('id') == "locate1"){
+            herfURL += "@30.6399605,104.0712453,17z"
+        } else {
+            herfURL += "@30.5580034,103.9997657,16z"
+        }
+        window.open(herfURL);
+    })
 })
 
 function refreshClassButtons(){
