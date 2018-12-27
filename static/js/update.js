@@ -37,7 +37,6 @@ function showChangeAlert() {
                     type: "password",
                     id: "passwordInput",
                 },
-
             },
             buttons: {
                 cancel: true,

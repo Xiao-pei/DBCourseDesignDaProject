@@ -51,7 +51,7 @@
                 <p>{{ form.submit(class="none") }}</p>
             </form>
             <p><button class="yesButton" id="updateButton">UPDATE</button></p>
-            <p><button class="yesButton secondary">CHANGE PASSWORD</button></p>
+            <p><button class="yesButton secondary" onclick="window.open('{{ url_for('change_password',user_id = session['user_id']) }}', '_self')">  CHANGE PASSWORD</button></p>
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             {% for message in messages %}

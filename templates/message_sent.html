@@ -19,20 +19,53 @@
 
     <div class="overlay">
         <div class="card transparentCard">
+            <div class="userButtonsContainer">
+                <!--自己看不到给自己发信息的链接-->
+                <div class="topButtonContainer">
+                    <div class="topBarButton allReservationButton" data-href="{{ url_for('user_profile',user_id = session['user_id']) }}">
+                        My Profile
+                    </div>
+                </div>
+            </div>
             <div class="innerContainer">
-                <a href="{{ url_for('user_profile',user_id = session['user_id']) }}">My profile</a>
-                <p>All Your Sent Messages:</p>
+
+
+                <div class="innerTitleContainer">
+                    <span class="innerTitleLabelContainer">
+                        <span class="innerTitleLabel">Sent Messages</span>
+                    </span>
+                </div>
                 {% block content %}
                 {% for message in messages %}
-                <p>Message to user: <a href={{ url_for('user_profile',user_id=message['dest_id']) }}> {{
-                        message['dest_id'] }} </a></p>
-                <p> Sent on : {{ message['resp_time'] }}</p>
-                <p>Content: {{ message['resp_text'] }} </p>
-                {% if message['read'] ==0 %}
-                The user has't read the message yet.
-                {% else %}
-                The user has read the message.
-                {% endif %}
+                <div class="secondaryContainer">
+
+                    <div class="sectionContainer messageListCellTitleContainer">
+                        <div class="
+                                    titleSectionLabel userName">
+                            {{ message['username'] }}
+                        </div>
+
+                        <div class="
+                                    titleSectionLabel messageTime">
+                            {{ message['resp_time'] }}
+                        </div>
+
+                        <span class="titleSectionLabel reservationStatus">
+
+                            {% if message['read'] == 0 %}
+                            <span class="titleSectionLabel reservationStatus status_unread"> Unread </span>
+                            <i class="material-icons statusIcon status_unread"> email </i>
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+                    <div class="textPreview nonPointer">
+                        {{ message['resp_text'] }}
+                    </div>
+
+                </div>
+
                 {% endfor %}
                 {% endblock %}
             </div>

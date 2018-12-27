@@ -3,7 +3,6 @@
 .messageListCellTitleContainer {
     background: #f0f0f0;
     padding: 10px 30px 5px 30px;
-    cursor: pointer;
     line-height: 24px;
 }
 
@@ -40,15 +39,14 @@
 }
 
 .textPreview{
-    padding: 10px 30px 10px 30px;
-    cursor: pointer;
+    padding: 20px 30px 20px 30px;
     font-size: 20px;
     font-weight: 600;
     color: #151515;
     line-height: 24px;
 }
 
-.textPreview:hover{
+.textPreview.clickable:hover{
     color: #45a9ce;
     text-decoration: underline;
 }
@@ -61,15 +59,50 @@
     color: #151515;
 }
 
-.secondaryContainer:hover{
+.secondaryContainer.clickable:hover{
     box-shadow: 0 0px 0px 1px #ffffff, 0 0px 0px 2px #45a9ce78;
 }
 
-.messageText:hover{
+.messageText.clickable:hover{
     box-shadow: none;
+}
+
+.clickable{
+    cursor: pointer;
 }
 
 .status_unread{
     color: #45a9ce;
     font-weight: 500;
+}
+
+.messageTextArea{
+    min-width: -webkit-fill-available;
+    max-width: -webkit-fill-available;
+    background: transparent;
+    border: 0;
+    outline: none;
+    min-height: 320px;
+    max-height: 800px;
+    font-size: 20px;
+    padding: 20px 30px;
+    font-weight: 500;
+    font-family: "SF Pro Display","SF Pro Icons","icomoon","Helvetica Neue","Helvetica","Arial","Microsoft Yahei",sans-serif;
+    transition: all 500ms cubic-bezier(0, 0.5, 0, 1) 0ms;
+    overflow: hidden;
+}
+
+.submitButton{
+    background-color: #45a9ce;
+    box-shadow: 0 4px 15px #45a9ce45;
+}
+
+.submitButton:hover:enabled, .submitButton:active:enabled{
+    box-shadow: 0 4px 15px #45a9ce40, 0 9px 37px #45a9ce21;
+}
+
+.submitButton:disabled{
+    box-shadow: none;
+    background: #e2e2e2;
+    cursor: default;
 }
