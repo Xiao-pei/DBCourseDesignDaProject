@@ -22,7 +22,7 @@
             <div class="insideCard classRoomContainer">
                 <p class="secondaryTitle">{{ buliding_names[buildings.index(building)] }}:</p>
                 {% for room in building %}
-                <span class="classRoomButton wide" data-herf="{{url_for('reserve',room_id=room['id'],begin=begin,end=end,date=date)}}">
+                <span class="classRoomButton wide" data-href="{{url_for('reserve',room_id=room['id'],begin=begin,end=end,date=date)}}">
                     <label class="buttonInnerSpan roomNameLabel">
                         {{room['room_name']}}
                     </label>

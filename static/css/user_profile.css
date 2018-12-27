@@ -1,0 +1,235 @@
+
+@media (max-width: 840px){
+    .transparentCard {
+        width: calc(100% - 20px) !important;
+    }
+}
+
+body{
+    
+}
+
+span{
+    display: inline-block;
+    transition: all 500ms cubic-bezier(0, 0.5, 0, 1) 0ms;
+}
+
+div{
+    transition: all 500ms cubic-bezier(0, 0.5, 0, 1) 0ms;
+}
+
+.innerTitleButton, .messageButton, .allReservationButton{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+}
+
+.card.transparentCard{
+    width: 800px;
+    padding: 0;
+    background: transparent;
+}
+
+
+.innerContainer{
+    background: white;
+    border-radius: 12px;
+    padding: 36px 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(1,1,1,0.05), 0 30px 50px rgba(1,1,1,0.06);
+}
+
+.innerTitleContainer{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    height: 42px;
+}
+
+.innerTitleLabelContainer{
+    height: 42px;
+    line-height: 42px;
+}
+
+.innerTitleLabel{
+    font-size: 32px;
+    text-align: left;
+    font-weight: 600;
+    height: 42px;
+    line-height: 42px;
+}
+
+.innerTitleButtonContainer{
+    height: 42px;
+    line-height: 42px;
+    font-size: 0px;
+    float: right;
+}
+
+.innerTitleButton{
+    background: #e5f3f8;
+    height: 32px;
+    width: 75px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 18px;
+    margin: 6px 0;
+    cursor: pointer;
+}
+
+.innerTitleButton:hover{
+    background: #e1f1f7;
+    box-shadow: 0 0px 0px 1px #ffffff, 0 0px 0px 2px #45a9ce73;
+}
+
+.innerTitleButtonIcon{
+    font-size: 14px;
+    height: 32px;
+    width: 24px;
+    line-height: 32px;
+    color: #45a9ce;
+    vertical-align: middle;
+}
+
+.newReservationIcon{
+    font-size: 20px;
+}
+
+.newReservationLabel{
+    margin-right: 4px;
+}
+
+.innerTitleButtonLabel{
+    font-size: 16px;
+    font-weight: 500;
+    height: 32px;
+    line-height: 32px;
+    color: #45a9ce;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.topButtonContainer{
+    display: inline-block;
+    float: right;
+    margin: 0px 0px 0px 10px;
+}
+
+.userButtonsContainer{
+    height: 40px;
+    margin-bottom: 12px;
+}
+
+.topBarButton{
+    height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
+    border-radius: 4px;
+    padding: 0px 12px;
+    font-size: 17px;
+    font-weight: 500;
+    color: #2a8cb1;
+    border: 1px solid #84c7e2;
+    background: #ceefff;
+}
+
+.topBarButton.highlighted{
+    animation: blink 2s;
+    animation-iteration-count: infinite;
+}
+
+.topBarButton:hover{
+    color: #177699;
+    border: 1px solid #84c7e2;
+    box-shadow: 0 0px 0px 1px #d8f0ff, 0 0px 0px 2px #2a8cb1ab;
+} 
+
+@keyframes blink{
+    from{
+        color: #177699;
+        box-shadow: 0 0px 0px 1px #d8f0ff, 0 0px 0px 2px #2a8cb1ab;
+    }
+
+    25%{
+        color: #2a8cb1;
+        box-shadow: none;
+    }
+
+    75%{
+        color: #2a8cb1;
+        box-shadow: none;
+    }
+
+    to{
+        color: #177699;
+        box-shadow: 0 0px 0px 1px #d8f0ff, 0 0px 0px 2px #2a8cb1ab;
+    }
+}
+
+.secondaryContainer{
+    background: #f7f7f7;
+    border-radius: 10px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.sectionContainer{
+    padding: 20px 30px;
+    font-size: 0px;
+}
+
+.secondaryTitle{
+    margin: 0px 0px 8px 0px;
+}
+
+.contentLabel{
+    font-size: 19px;
+    font-weight: 500;
+    color: #464646;
+    margin-right: 15px;
+}
+
+.titleSectionLabel{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.reservationStatus{
+    float: right;
+    height: 30px;
+    line-height: 30px;
+}
+
+.reservationTime{
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    color: gray;
+}
+
+.statusIcon{
+    font-size: 22px;
+    line-height: 30px;
+    margin-right: 5px;
+}
+
+.titleSectionContainer{
+    background: #f0f0f0;
+    padding: 12px 30px;
+}
+
+.status_approved{
+    color: #17b017;
+}
+
+.status_waiting{
+    color: #3092bc;
+}
+
+.status_closed{
+    color: #c84040;
+}

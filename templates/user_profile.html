@@ -1,58 +1,201 @@
-{% block content %}
-     {% if display_message == 0 %} <!--只有用户自己看到-->
-         {% if have_new_message == 1 %}
-                <p> <a href={{ url_for('message',user_id=user_id) }}> You have NEW messages </a></p>
-         {% else %}
-                <p> <a href={{ url_for('message',user_id=user_id) }}> My messages </a></p>
-         {% endif %}
-         {% if session['user_type'] == 1 %}<!--管理员可见-->
-             <p><a href={{ url_for('reserve_all') }}> Reservations of all users </a> </p>
-             {% if have_new_reserve == 0 %}
-                <p><a href={{ url_for('reserve_management') }}> Manage user reservations </a></p>
-             {% else %}
-                <p><a href={{ url_for('reserve_management') }}> Have new user reservations!! </a></p>
-             {% endif %}
-         {% endif %}
-    {% endif %}
-    <h1>Welcome to the profile of {{info.username}}</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<p>username: <b>{{ info.username }}</b></p>
-    <p>real name: <b>{{ info.real_name }}</b></p>
-    <p>Last login: <b>{{ info.last_login_time }}</b></p>
-    {% if tel  %}
-      <p>Tel: <b>{{ tel }}</b></p>
-    {% endif %}
-    {% if display_message == 1 %} <!--自己看不到给自己发信息的链接-->
-        <p>Send a Message <a href={{ url_for('send_message',user_id=user_id,username=info.username) }}> Click here </a></p>
-    {% endif %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/materialIcon.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/user_profile.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/alert.css')}}">
+    <script src='{{url_for('static', filename='js/jquery-3.3.1.min.js')}}'></script>
+    <script src='{{url_for('static', filename='js/jquery.easing.1.3.js')}}'></script>
+    <script src='{{url_for('static', filename='js/user_profile.js')}}'></script>
+    <script src='{{url_for('static', filename='js/sweetalert.min.js')}}'></script>
+</head>
 
-    {% if session['user_type']==1 and display_message == 1%}
-    <form action={{ url_for('lock')}} method="post" novalidate>
-        <p><input id="user_id" name="user_id" type="hidden" value={{ user_id }}></p>
-        {% if info.user_type == -1 %}
-         <p><input id="submit" name="submit" type="submit" value="Unlock user"></p>
-        {% else %}
-        <p><input id="submit" name="submit" type="submit" value="Lock user"></p>
-        {% endif %}
-    </form>
-    {% endif %}
+<body>
+    <div class="overlay">
+        <div class="card transparentCard">
+            {% block content %}
+            {% if display_message == 0 %}
+            <!--只有用户自己看到-->
+            <div class="userButtonsContainer">
 
-    {% if display_message ==0 or session['user_type']==1 %} <!--只有管理员和用户自己才能看到记录-->
-    <p>{{ info.username }}'s Reserves:</p>
-    {% for reserve in reserves %}
-        <p> apply {{ reserve['room_name'] }} in {{ reserve['region'] }}{{ reserve['address'] }} for <b>{{ reserve['reason'] }}</b>
-        On {{ reserve['date'] }} During: {{ reserve['begin_course'] }} to {{ reserve['end_course'] }}
-    </p>
-    <p>Apply time:  {{ reserve['apply_date'] }} , Status:
-    {% if reserve['result']==1 %}
-        <b>Approved</b>
-    {% elif reserve['result']==0 %}
-        <b>Waiting</b>
-    {% else %}
-        <b>Refused</b>
-    {% endif %}
-    </p>
-    {% endfor %}
-    {% endif %}
+                {% if have_new_message == 1 %}
+                <div class="topButtonContainer">
+                    <div class="topBarButton newMessageButton highlighted" data-href="{{ url_for('message',user_id=user_id) }}">
+                        My Messages </div>
+                </div> {% else %} <div class="topButtonContainer">
+                    <div class="topBarButton messageButton" data-href="{{ url_for('message',user_id=user_id) }}">
+                        My Messages
+                    </div>
+                </div>
+                {% endif %}
 
-{% endblock %}
+                {% if session['user_type'] == 1 %}
+                <!--管理员可见-->
+
+                <div class="topButtonContainer">
+                    <div class="topBarButton allReservationButton" data-href="{{ url_for('reserve_all') }}">
+                        All Reservations
+                    </div>
+                </div>
+                {% if have_new_reserve == 0 %}
+                <div class="topButtonContainer">
+                    <div class="topBarButton allReservationButton" data-href="{{ url_for('reserve_management') }}">
+                        Manage Reservations
+                    </div>
+                </div>
+
+                {% else %}
+                <div class="topButtonContainer">
+                    <div class="topBarButton allReservationButton highlighted" data-href="{{ url_for('reserve_management') }}">
+                        Manage Reservations </div>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if display_message == 1 %}
+            <div class="userButtonsContainer">
+                <!--自己看不到给自己发信息的链接-->
+                <div class="topButtonContainer">
+                    <div class="topBarButton allReservationButton" data-href="{{ url_for('send_message',user_id=user_id,username=info.username) }}">
+                        Send a Message
+                    </div>
+                </div>
+
+                {% if session['user_type']==1 %}
+                <div class="topButtonContainer">
+                    <form action={{ url_for('lock')}} method="post" novalidate>
+                        <input id="user_id" name="user_id" type="hidden" value={{ user_id }}>
+                        {% if info.user_type == -1 %}
+                        <input class="topBarButton allReservationButton" id="submit" name="submit" type="submit" value="Unlock user">
+                        {% else %}
+                        <input class="topBarButton allReservationButton" id="submit" name="submit" type="submit" value="Lock user">
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+
+            <div class="innerContainer">
+                <div class="innerTitleContainer">
+                    <span class="innerTitleLabelContainer">
+                        <span class="innerTitleLabel">{{info.username}}'s Profile</span>
+                    </span>
+                    {% if display_message ==0 %}
+                    <span class="innerTitleButtonContainer">
+                        <span class="innerTitleButton" data-href="/user/{{ user_id }}/update">
+                            <i class="material-icons innerTitleButtonIcon">
+                                edit
+                            </i>
+                            <span class="innerTitleButtonLabel">Edit</span>
+                        </span>
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="secondaryContainer">
+
+                    <div class="sectionContainer">
+                        <div class="secondaryTitle">Username</div>
+                        <span class="contentLabel">{{ info.username }}</span>
+
+                    </div>
+
+                    <div class="sectionContainer">
+                        <div class="secondaryTitle">Real Name</div>
+                        <span class="contentLabel">{{ info.real_name }}</span>
+
+                    </div>
+                    <div class="sectionContainer">
+                        <div class="secondaryTitle">Last login</div>
+                        <span class="contentLabel">{{ info.last_login_time }}</span>
+
+                    </div>
+                    {% if tel %}
+                    <div class="sectionContainer">
+                        <div class="secondaryTitle">Telephone Number</div>
+                        <span class="contentLabel">{{ tel }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            {% if display_message ==0 or session['user_type']==1 %}
+            <div class="innerContainer">
+                <div class="innerTitleContainer">
+                    <span class="innerTitleLabelContainer">
+                        <span class="innerTitleLabel">{{ info.username }}'s Reservations</span>
+                    </span>
+                    {% if display_message ==0 %}
+                    <span class="innerTitleButtonContainer">
+                        <span class="innerTitleButton" data-href="/search/time">
+                            <i class="material-icons innerTitleButtonIcon newReservationIcon">
+                                add
+                            </i>
+                            <span class="innerTitleButtonLabel newReservationLabel">New</span>
+                        </span>
+                    </span>
+                    {% endif %}
+                </div>
+
+                <!--只有管理员和用户自己才能看到记录-->
+                {% for reserve in reserves %}
+                <div class="secondaryContainer">
+
+                    <div class="sectionContainer titleSectionContainer">
+                        <div class="
+                        titleSectionLabel reservationTime">
+                            {{reserve['apply_date'] }}
+                        </div>
+
+                        <span class="titleSectionLabel reservationStatus">
+                            {% if reserve['result']==1 %}
+
+                            <span class="titleSectionLabel reservationStatus status_approved">Approved</span>
+                            <i class="material-icons statusIcon status_approved"> check </i>
+                            {% elif reserve['result']==0 %}
+
+                            <span class="titleSectionLabel reservationStatus status_waiting">Waiting</span>
+                            <i class="material-icons statusIcon status_waiting"> schedule </i>
+
+                            {% else %}
+
+                            <span class="titleSectionLabel reservationStatus status_closed">Refused</span>
+                            <i class="material-icons statusIcon status_closed"> close </i>
+
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+                    <div class="sectionContainer">
+                        <div class="secondaryTitle">Scheduled Time</div>
+                        <span class="contentLabel">{{ reserve['date'] }}</span>
+                        <span class="contentLabel"> {{ reserve['begin_course'] }} to {{
+                            reserve['end_course'] }} classes </span>
+                    </div>
+                    <div class="sectionContainer">
+                        <div class="secondaryTitle">Classroom</div>
+                        <span class="contentLabel">{{ reserve['room_name'] }}</span>
+                        <span class="contentLabel"> {{ reserve['region'] }} </span>
+                        <span class="contentLabel"> {{ reserve['address'] }} </span>
+                    </div>
+                    <div class="sectionContainer">
+                        <div class="secondaryTitle">For</div>
+                        <div class="contentLabel">{{ reserve['reason'] }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% endblock %}
+        </div>
+    </div>
+</body>
