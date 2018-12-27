@@ -3,21 +3,103 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>All Reserves</title>
+    <title>Manage Reservations</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/materialIcon.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/user_profile.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/alert.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/reserve_management.css')}}">
+    <script src='{{url_for('static', filename='js/jquery-3.3.1.min.js')}}'></script>
+    <script src='{{url_for('static', filename='js/jquery.easing.1.3.js')}}'></script>
+    <script src='{{url_for('static', filename='js/reserve_management.js')}}'></script>
+    <script src='{{url_for('static', filename='js/sweetalert.min.js')}}'></script>
 </head>
 
 <body>
-    <p>All reserves:</p>
-    {% block content %}
-    {% for reserve in reserves %}
-    <p>
-        Reserve user:<a href={{ url_for('user_profile',user_id=reserve['user_id']) }}> {{ reserve['user_id'] }} </a></p>
-    <p> apply {{ reserve['address'] }} for {{ reserve['reason'] }}
-        On {{ reserve['date'] }} During: {{ reserve['begin_course'] }} to {{ reserve['end_course'] }}
-    </p>
-    <p>Apply time: {{ reserve['apply_time'] }} Status: {{ reserve['status'] }} </p>
-    {% endfor %}
-    {% endblock %}
+
+    <div class="overlay">
+        <div class="card transparentCard">
+            <div class="innerContainer">
+
+                <div class="innerTitleContainer">
+                    <span class="innerTitleLabelContainer">
+                        <span class="innerTitleLabel">All Reservations</span>
+                    </span>
+
+                </div>
+
+                {% block content %}
+                {% for reserve in reserves %}
+
+                <div class="secondaryContainer">
+
+                    <div class="sectionContainer titleSectionContainer">
+                        <div class="
+                            titleSectionLabel reservationTime">
+                            {{ reserve['apply_time'] }}
+                        </div>
+
+                        <span class="titleSectionLabel reservationStatus">
+                            <span class="sectionTitleButton" data-href="{{url_for('user_profile',user_id=reserve['user_id'])}}">
+                                <i class="material-icons innerTitleButtonIcon newReservationIcon">
+                                    person_outline
+                                </i>
+                                <span class="innerTitleButtonLabel ">User Profile</span>
+                            </span>
+
+                            {% if reserve['status'] == "Approved" %}
+
+                            <span class="titleSectionLabel reservationStatus status_approved">Approved</span>
+                            <i class="material-icons statusIcon status_approved"> check </i>
+
+                            {% else %}
+
+                            <span class="titleSectionLabel reservationStatus status_closed">Refused</span>
+                            <i class="material-icons statusIcon status_closed"> close </i>
+
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+                    <div class="sectionContainer">
+                        <div class="secondaryTitle">Scheduled Time</div>
+                        <span class="contentLabel">{{ reserve['date'] }}</span>
+                        <span class="contentLabel"> {{ reserve['begin_course'] }} to {{
+                            reserve['end_course'] }} classes </span>
+                    </div>
+                    <div class="sectionContainer">
+                        <div class="secondaryTitle">Classroom</div>
+                        <span class="contentLabel"> {{ reserve['address'] }} </span>
+                    </div>
+                    <div class="sectionContainer">
+                        <div class="secondaryTitle">For</div>
+                        <div class="contentLabel">{{ reserve['reason'] }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endblock %}
+
+            </div>
+        </div>
+    </div>
+
+
 </body>
 
 </html>
+
+<style>
+.sectionTitleButton{
+    vertical-align: top;
+    margin-top: -1px;
+    border-radius: 16px;
+    padding: 0 8px;
+    font-size: 0px;
+}
+
+.innerTitleButtonIcon, .innerTitleButtonLabel{
+    line-height: 30px;
+    vertical-align: top;
+}
+</style>

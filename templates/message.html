@@ -1,35 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Messages</title>
+    <title>Message List</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/materialIcon.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/alert.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/user_profile.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/message.css')}}">
+    <script src='{{url_for('static', filename='js/jquery-3.3.1.min.js')}}'></script>
+    <script src='{{url_for('static', filename='js/jquery.easing.1.3.js')}}'></script>
+    <script src='{{url_for('static', filename='js/message.js')}}'></script>
+    <script src='{{url_for('static', filename='js/sweetalert.min.js')}}'></script>
 </head>
+
 <body>
-{% block content %}
+    <div class="overlay">
+        <div class="card transparentCard">
+            <div class="innerContainer">
+                {% block content %}
+                <div class="innerTitleContainer">
+                    <span class="innerTitleLabelContainer">
+                        <span class="innerTitleLabel">Message List</span>
+                    </span>
 
-    <h1>Your messages</h1>
+                </div>
 
-    {% if message_view is none %}
-        choose a message to display
-    {% else %}
-        <p>Message from <a href={{ url_for('user_profile',user_id=message_view['source_id']) }}>{{ message_view['source_id'] }}</a> </p>
-        <p>{{ message_view['text'] }}</p>
-    {% endif %}
-   <dl>
-   {% for message in messages %}
-      <dt>Message from : <a href={{ url_for('user_profile',user_id=message['source_id']) }}> {{ message['username'] }} </a>
-      {{ message['resp_time'] }}</dt>
-      <dd><a href={{ url_for('message',user_id=session['user_id'],msg_id=message['msg_id']) }}> {{ message['preview'] }} </a>
-        {% if message['read'] == 0 %}
-            You haven't read yet.
-       {% else %}
-            You have read the message.
-       {% endif %}
-    {% endfor %}
-   </dl>
+                <div class="secondaryContainer messageText">
+                    {% if message_view is none %}
+
+                    choose a message to display
+
+                    {% else %}
+
+                    
+                    {{ message_view['text'] }}
+
+                    {% endif %}
+                </div>
+
+                <dl>
+                    {% for message in messages %}
+                    <div class="secondaryContainer">
+
+                        <div class="sectionContainer messageListCellTitleContainer" data-href="{{ url_for('user_profile',user_id=message['source_id']) }}">
+                            <div class="
+                                    titleSectionLabel userName">
+                                {{ message['username'] }}
+                            </div>
+
+                            <div class="
+                                    titleSectionLabel messageTime">
+                                {{ message['resp_time'] }}
+                            </div>
+
+                            <span class="titleSectionLabel reservationStatus">
+
+                                {% if message['read'] == 0 %}
+                                <span class="titleSectionLabel reservationStatus status_unread"> Unread </span>
+                                <i class="material-icons statusIcon status_unread"> email </i>
+                                {% endif %}
+                            </span>
+
+                        </div>
+
+                        <div class="textPreview" data-href="{{ url_for('message',user_id=session['user_id'],msg_id=message['msg_id']) }}">
+                            {{ message['preview'] }}...
+                        </div>
 
 
-{% endblock %}
+                    </div>
+                    {% endfor %}
+                </dl>
+
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
 
 </body>
+
 </html>

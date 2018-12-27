@@ -1,7 +1,7 @@
 var selectedClassNum = 0
 $(document).ready(function () {
 
-    $(".dateSelecterCell ").unbind("click").click(function () {
+    $(".dateSelecterCell ").unbind("click").click(function (event){
         $(this).addClass("selected")
         $(this).find(".dateLabel").addClass("light")
         $(this).find(".dateRadio").prop('checked', true);
@@ -16,7 +16,7 @@ $(document).ready(function () {
         $(this).find(".courseAnimateDiv").stop().animate({ width: "0px" }, 200, 'easeInQuad')
     })
 
-    $(".courseSelecterCell ").unbind("click").click(function () {
+    $(".courseSelecterCell ").unbind("click").click(function (event){
         if ($(this).hasClass("disabled")) {
             return
         }
@@ -45,7 +45,7 @@ $(document).ready(function () {
         }
     })
 
-    $(".campusSelecterCell ").unbind("click").click(function () {
+    $(".campusSelecterCell ").unbind("click").click(function (event){
         $(this).addClass("selected")
         $(this).siblings().removeClass("selected").find(".campusLabel").removeClass("light")
         $(this).siblings().find(".locationButton").removeClass("light")

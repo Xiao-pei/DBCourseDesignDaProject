@@ -1,5 +1,5 @@
 $(document).ready(function (){
-    $(".inputo").click(function(){
+    $(".inputo").click(function (event){
         $(this).css("background", "");
         $(this).css("border", "");
         $(".yesButton.register").attr("disabled", false)
