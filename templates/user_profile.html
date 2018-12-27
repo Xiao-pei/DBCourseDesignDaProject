@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{info.username}}'s Profile</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/materialIcon.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/user_profile.css')}}">
@@ -24,10 +24,10 @@
 
                 {% if have_new_message == 1 %}
                 <div class="topButtonContainer">
-                    <div class="topBarButton newMessageButton highlighted" data-herf="{{ url_for('message',user_id=user_id) }}">
+                    <div class="topBarButton newMessageButton highlighted" data-href="{{ url_for('message',user_id=user_id) }}">
                         My Messages </div>
                 </div> {% else %} <div class="topButtonContainer">
-                    <div class="topBarButton messageButton" data-herf="{{ url_for('message',user_id=user_id) }}">
+                    <div class="topBarButton messageButton" data-href="{{ url_for('message',user_id=user_id) }}">
                         My Messages
                     </div>
                 </div>
@@ -37,20 +37,20 @@
                 <!--管理员可见-->
 
                 <div class="topButtonContainer">
-                    <div class="topBarButton allReservationButton" data-herf="{{ url_for('reserve_all') }}">
+                    <div class="topBarButton allReservationButton" data-href="{{ url_for('reserve_all') }}">
                         All Reservations
                     </div>
                 </div>
                 {% if have_new_reserve == 0 %}
                 <div class="topButtonContainer">
-                    <div class="topBarButton allReservationButton" data-herf="{{ url_for('reserve_management') }}">
+                    <div class="topBarButton allReservationButton" data-href="{{ url_for('reserve_management') }}">
                         Manage Reservations
                     </div>
                 </div>
 
                 {% else %}
                 <div class="topButtonContainer">
-                    <div class="topBarButton allReservationButton highlighted" data-herf="{{ url_for('reserve_management') }}">
+                    <div class="topBarButton allReservationButton highlighted" data-href="{{ url_for('reserve_management') }}">
                         Manage Reservations </div>
                 </div>
                 {% endif %}
@@ -61,14 +61,14 @@
             <div class="userButtonsContainer">
                 <!--自己看不到给自己发信息的链接-->
                 <div class="topButtonContainer">
-                    <div class="topBarButton allReservationButton" data-herf="{{ url_for('send_message',user_id=user_id,username=info.username) }}">
+                    <div class="topBarButton allReservationButton" data-href="{{ url_for('send_message',user_id=user_id,username=info.username) }}">
                         Send a Message
                     </div>
                 </div>
 
                 {% if session['user_type']==1 %}
                 <div class="topButtonContainer">
-                    <form action={{ url_for('lock')}} method="post" novalidate>
+                    <form action="{{ url_for('lock')}}" method="post" novalidate>
                         <input id="user_id" name="user_id" type="hidden" value={{ user_id }}>
                         {% if info.user_type == -1 %}
                         <input class="topBarButton allReservationButton" id="submit" name="submit" type="submit" value="Unlock user">
@@ -77,18 +77,20 @@
                         {% endif %}
                     </form>
                 </div>
+
+                {% endif %}
             </div>
-            {% endif %}
             {% endif %}
 
             <div class="innerContainer">
+
                 <div class="innerTitleContainer">
                     <span class="innerTitleLabelContainer">
                         <span class="innerTitleLabel">{{info.username}}'s Profile</span>
                     </span>
                     {% if display_message ==0 %}
                     <span class="innerTitleButtonContainer">
-                        <span class="innerTitleButton" data-herf="/user/{{ user_id }}/update">
+                        <span class="innerTitleButton" data-href="/user/{{ user_id }}/update">
                             <i class="material-icons innerTitleButtonIcon">
                                 edit
                             </i>
@@ -97,6 +99,7 @@
                     </span>
                     {% endif %}
                 </div>
+                
                 <div class="secondaryContainer">
 
                     <div class="sectionContainer">
@@ -118,7 +121,7 @@
                     {% if tel %}
                     <div class="sectionContainer">
                         <div class="secondaryTitle">Telephone Number</div>
-                        <span class="contentLabel">{{ tel }}}</span>
+                        <span class="contentLabel">{{ tel }}</span>
                     </div>
                     {% endif %}
                 </div>
@@ -133,7 +136,7 @@
                     </span>
                     {% if display_message ==0 %}
                     <span class="innerTitleButtonContainer">
-                        <span class="innerTitleButton" data-herf="/search/time">
+                        <span class="innerTitleButton" data-href="/search/time">
                             <i class="material-icons innerTitleButtonIcon newReservationIcon">
                                 add
                             </i>

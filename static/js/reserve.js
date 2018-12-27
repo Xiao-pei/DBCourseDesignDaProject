@@ -16,7 +16,7 @@ $(document).ready(function (){
         $(".textareaContainer").removeClass("focus")
     })
 
-    $(".reselectButton").click(function (){
+    $(".reselectButton").click(function (event){
         window.open("/search/time", "_self");
     })
 })

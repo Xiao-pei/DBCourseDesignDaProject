@@ -1,0 +1,75 @@
+
+
+.messageListCellTitleContainer {
+    background: #f0f0f0;
+    padding: 10px 30px 5px 30px;
+    cursor: pointer;
+    line-height: 24px;
+}
+
+.titleSectionLabel {
+    display: inline-block;
+    font-weight: 500;
+    color: grey;
+}
+
+.sectionTitleButton{
+    vertical-align: top;
+    margin-top: -1px;
+    border-radius: 16px;
+    padding: 0 8px;
+    font-size: 0px;
+}
+
+.innerTitleButtonIcon, .innerTitleButtonLabel{
+    line-height: 30px;
+    vertical-align: top;
+}
+
+.userName.hover{
+    color: #45a9ce;
+    text-decoration: underline;
+}
+
+.messageTime{
+    margin-left: 13px;
+    font-weight: 400;
+    line-height: 24px;
+    font-size: 16px;
+    color: gray;
+}
+
+.textPreview{
+    padding: 10px 30px 10px 30px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    color: #151515;
+    line-height: 24px;
+}
+
+.textPreview:hover{
+    color: #45a9ce;
+    text-decoration: underline;
+}
+
+.messageText{
+    padding: 40px 30px 40px 30px;
+    cursor: default;
+    font-size: 20px;
+    font-weight: 500;
+    color: #151515;
+}
+
+.secondaryContainer:hover{
+    box-shadow: 0 0px 0px 1px #ffffff, 0 0px 0px 2px #45a9ce78;
+}
+
+.messageText:hover{
+    box-shadow: none;
+}
+
+.status_unread{
+    color: #45a9ce;
+    font-weight: 500;
+}

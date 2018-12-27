@@ -9,7 +9,7 @@ $(document).ready(function () {
         $(this).find(".nextIndicator").addClass("hidden")
     })
 
-    $(".classRoomButton").unbind("click").click(function (){
+    $(".classRoomButton").unbind("click").click(function (event){
         window.open($(this).data("href"), "_self");
     })
 })

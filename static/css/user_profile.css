@@ -18,7 +18,7 @@ div{
     transition: all 500ms cubic-bezier(0, 0.5, 0, 1) 0ms;
 }
 
-.innerTitleButton, .messageButton, .allReservationButton{
+.topBarButton, .innerTitleButton, .messageButton, .allReservationButton{
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;

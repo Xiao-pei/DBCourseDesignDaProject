@@ -1,19 +1,8 @@
 $(document).ready(function (){
-    $(".innerTitleButton").click(function (){
-        if ($(this).data("herf") != ""){
-            window.open($(this).data("herf"), "_self");
-        }
-    })
-    
-    $(".messageButton").click(function (){
-        if ($(this).data("herf") != ""){
-            window.open($(this).data("herf"), "_self");
-        }
-    })
-
-    $(".allReservationButton").click(function (){
-        if ($(this).data("herf") != ""){
-            window.open($(this).data("herf"), "_self");
+    $(".topBarButton, .messageButton, .messageButton, allReservationButton, .innerTitleButton ").click( function(event){
+        console.log(":fdsff")
+        if ($(this).data("href") != ""){
+            window.open($(this).data("href"), "_self");
         }
     })
 })

@@ -1,6 +1,7 @@
 
 $(document).ready(function (){
-    $("#updateButton").click(function (){
+    $("#updateButton").click(function (event){
+        event.preventDefault();
         showChangeAlert()
     })
 })

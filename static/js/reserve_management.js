@@ -1,19 +1,19 @@
 $(document).ready(function (){
-    $(".approveButton").click(function (){
+    $(".approveButton").click(function (event){
         $(".approve").click()
     })
     
-    $(".refuseButton").click(function (){
+    $(".refuseButton").click(function (event){
         $(".disapprove").click()
     })
 
-    $(".sectionTitleButton").unbind("click").click(function (){
+    $(".sectionTitleButton").unbind("click").click(function (event){
         if ($(this).data("href") != ""){
             window.open($(this).data("href"), "_blank");
         }
     })
 
-    $(".topBarButton").unbind("click").click(function (){
+    $(".topBarButton").unbind("click").click(function (event){
         if ($(this).data("href") != ""){
             window.open($(this).data("href"), "_self");
         }
