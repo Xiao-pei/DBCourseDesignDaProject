@@ -66,3 +66,8 @@ class SearchForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+class PasswordForm(FlaskForm):
+    old_password = PasswordField('Old Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[DataRequired()])
+    new_password_repeat = PasswordField('Re-enter New Password', validators=[DataRequired()])
+    submit = SubmitField('Submit')

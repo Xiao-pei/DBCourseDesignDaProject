@@ -7,7 +7,7 @@ import sqlite3
 import datetime
 import time
 import config
-from forms import LoginForm, RegisterForm, UpdateForm, SearchForm
+from forms import LoginForm, RegisterForm, UpdateForm, SearchForm, PasswordForm
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -179,7 +179,33 @@ def user_profile_update(user_id):
             form.tel.data = res[4]
             return render_template('update.html', title='Update', form=form)
     # 不是本用户访问
-    return redirect(url_for('hello'))  # 待修改
+    return redirect(url_for('hello'))
+
+
+# 更新用户信息
+@app.route('/user/<user_id>/update/password', methods=['GET', 'POST'])
+def change_password(user_id):
+    form = PasswordForm()
+    cursor = g.db.execute('SELECT * FROM user WHERE id=? ', [user_id])
+    res = cursor.fetchone()
+    if res is None:
+        return render_template('404.html')  # 没有改用户 404
+    if int(session.get('user_id')) == int(user_id):
+        if request.method == 'POST' and form.validate_on_submit():
+            old_password = request.form.get('old_password')
+            new_password = request.form.get('new_password')
+            new_password_repeat = request.form.get('new_password_repeat')
+            if new_password != new_password_repeat:
+                flash(message='Please enter the same password in both new password fields.')
+                return render_template('change_password.html', form=form)
+            if md5_user_psw(res[1], old_password) == res[2]:  # 密码正确
+                g.db.execute('UPDATE user SET pass_hash=? WHERE id=?', [md5_user_psw(res[1], new_password), user_id])
+                return redirect(url_for('user_profile', user_id=session['user_id']))
+            else:
+                flash(message='Password error')
+                return render_template('change_password.html', form=form)
+        else:
+            return render_template('change_password.html', form=form)
 
 
 @app.route('/search/time', methods=['GET'])
@@ -443,7 +469,7 @@ def logout():
     # 如果会话中有用户id就删除它。
     session.pop('user_id', None)
     session.pop('user_type', None)
-    return url_for('hello')
+    return redirect(url_for('hello'))
 
 
 @app.errorhandler(404)
