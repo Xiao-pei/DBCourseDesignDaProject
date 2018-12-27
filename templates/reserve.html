@@ -21,16 +21,24 @@
             <form action={{ url_for('reserve_result') }} method="post" novalidate class="submitForm">
 
                 <h1 class="bigTitle">One more step...</h1>
-                <div class="classRoomBar">{{ room_name }} in {{ address }} Room Capacity: {{ size }}</div>
-                <textarea placeholder="This classroom will be used for..." cols="35" id="reason" name="reason" rows="20"
-                    maxlength="2000" class="reasonTextArea"></textarea>
-
+                <div class="textareaContainer">
+                    <div class="classroomBar">
+                        <span class="classroomBarLabel" id="classroomName">{{ room_name }}</span>
+                        <i class="material-icons classroomBarLabel" id="classroomCapacityIcon">people</i>
+                        <span class="classroomBarLabel" id="classroomCapacity">{{ size }} </span>
+                        <span class="classroomBarLabel" id="classroomAddress"> {{ address }} </span>
+                        <span class="reselectButton"> Reselect </span>
+                    </div>
+                    <textarea placeholder="This classroom will be used for..." cols="35" id="reason" name="reason" rows="20"
+                        maxlength="2000" class="reasonTextArea"></textarea>
+                </div>
                 <p><input id="room_id" name="room_id" type="hidden" value={{ room_id }}></p>
                 <p><input id="begin_time" name="begin_time" type="hidden" value={{ begin_time }}></p>
                 <p><input id="end_time" name="end_time" type="hidden" value={{ end_time }}></p>
                 <div class="buttonBar">
                     <div class="buttonContainer">
-                        <input id="submit" name="submit" type="submit" value="Submit" class="bottomButton submitButton" disabled="disabled">
+                        <input id="submit" name="submit" type="submit" value="Submit" class="bottomButton submitButton"
+                            disabled="disabled">
                     </div>
                 </div>
 

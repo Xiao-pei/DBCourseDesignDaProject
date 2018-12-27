@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    let classroom = "{{ url_for('reserve',room_id=room['id'],begin=begin,end=end,date=date)}}"
 
     $(".classRoomButton").hover(function (){
         $(this).removeClass("wide")

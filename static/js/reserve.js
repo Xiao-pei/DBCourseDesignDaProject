@@ -7,4 +7,16 @@ $(document).ready(function (){
             $(".submitButton").attr("disabled", false)
         }
     })
+
+    $(".reasonTextArea").focus(function (){
+        $(".textareaContainer").addClass("focus")
+    })
+
+    $(".reasonTextArea").focusout(function (){
+        $(".textareaContainer").removeClass("focus")
+    })
+
+    $(".reselectButton").click(function (){
+        window.open("/search/time", "_self");
+    })
 })
