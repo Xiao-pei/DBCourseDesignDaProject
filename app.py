@@ -444,8 +444,10 @@ def message_sent(user_id):
             result = cursor.fetchall()
             messages = []
             for line in result:
+                cursor_username = g.db.execute('SELECT username FROM user WHERE id=?', [line[0]])
+                username = cursor_username.fetchone()[0]
                 messages.append({'dest_id': line[0], 'resp_text': line[1], 'read': int(line[3]),
-                                 'resp_time': time_to_date(line[2])})
+                                 'resp_time': time_to_date(line[2]), 'username': username})
             return render_template('message_sent.html', messages=messages)
     else:
         return redirect(url_for('hello'))
