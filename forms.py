@@ -7,7 +7,6 @@ __author__ = 'Xiao Pei'
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, BooleanField, RadioField, validators, FormField, TextAreaField
 from wtforms.validators import DataRequired
-from wtforms.form import BaseForm
 import time
 import datetime
 
@@ -37,7 +36,7 @@ class UpdateForm(FlaskForm):
 
 def getdays():
     today = datetime.datetime.now()
-    days: List[datetime] = []
+    days = []
     count = 0
     while count <= 7:
         days.append(today + datetime.timedelta(days=count))
