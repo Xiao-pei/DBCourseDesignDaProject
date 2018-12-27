@@ -11,18 +11,18 @@ from forms import LoginForm, RegisterForm, UpdateForm, SearchForm, PasswordForm
 
 app = Flask(__name__)
 app.config.from_object('config')
-course_choices = [(datetime.timedelta(hours=8, minutes=15), '第01节课'),
-                  (datetime.timedelta(hours=9, minutes=10), '第02节课'),
-                  (datetime.timedelta(hours=10, minutes=15), '第03节课'),
-                  (datetime.timedelta(hours=11, minutes=10), '第04节课'),
-                  (datetime.timedelta(hours=13, minutes=50), '第05节课'),
-                  (datetime.timedelta(hours=14, minutes=45), '第06节课'),
-                  (datetime.timedelta(hours=15, minutes=40), '第07节课'),
-                  (datetime.timedelta(hours=16, minutes=45), '第08节课'),
-                  (datetime.timedelta(hours=17, minutes=45), '第09节课'),
-                  (datetime.timedelta(hours=19, minutes=20), '第10节课')]
-time_to_course = {'815': '第01节课', '910': '第02节课', '1015': '第03节课', '1110': '第04节课', '1350': '第05节课',
-                  '1445': '第06节课', '1540': '第07节课', '1645': '第08节课', '1745': '第09节课', '1920': '第10节课'}
+course_choices = [(datetime.timedelta(hours=8, minutes=15), '1st'),
+                  (datetime.timedelta(hours=9, minutes=10), '2nd'),
+                  (datetime.timedelta(hours=10, minutes=15), '3rd'),
+                  (datetime.timedelta(hours=11, minutes=10), '4th'),
+                  (datetime.timedelta(hours=13, minutes=50), '5th'),
+                  (datetime.timedelta(hours=14, minutes=45), '6th'),
+                  (datetime.timedelta(hours=15, minutes=40), '7th'),
+                  (datetime.timedelta(hours=16, minutes=45), '8th'),
+                  (datetime.timedelta(hours=17, minutes=45), '9th'),
+                  (datetime.timedelta(hours=19, minutes=20), '10th')]
+time_to_course = {'815': '1th', '910': '2th', '1015': '3th', '1110': '4th', '1350': '5th',
+                  '1445': '6th', '1540': '7th', '1645': '8th', '1745': '9th', '1920': '第10th'}
 
 
 @app.before_request
@@ -230,7 +230,7 @@ def search_time_result():
         return redirect(url_for('search_time'))
     checkboxes, i = [], 1
     begin, end = -1, -1
-    # i 代表第i节课
+    # i 代表第ith
     while i < 11:
         tmpresult = request.form.get('course' + str(i)) is not None
         checkboxes.append(tmpresult)
@@ -344,7 +344,7 @@ def reserve_management():
                 begin_time, end_time = time.localtime(line[4]), time.localtime(line[5])
                 apply_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(line[6]))
                 date = time.strftime("%Y-%m-%d", begin_time)
-                address = room_info[0] + room_info[1] + room_info[2]
+                address =room_info[2]+ ", " + room_info[1] + ", " + room_info[0]
                 begin_course = time_to_course[str(begin_time.tm_hour) + str(begin_time.tm_min)]
                 end_course = time_to_course[str(end_time.tm_hour) + str(end_time.tm_min)]
                 reserves.append({'user_id': line[1], 'apply_time': apply_date, 'date': date,

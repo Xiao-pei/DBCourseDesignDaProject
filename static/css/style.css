@@ -69,12 +69,16 @@ button{
     background-color: #fff;
     box-shadow: 0 10px 25px rgba(1,1,1,0.05), 0 30px 50px rgba(1,1,1,0.06);
     text-align: left;
-    border-radius: 5px;
+    border-radius: 12px;
     position: static;
     display: inline-block;
     vertical-align: middle;
     pointer-events: auto;
     box-sizing: border-box;
+}
+
+.card.transparentCard{
+    box-shadow: none;
 }
 
 @media (max-width: 800px){

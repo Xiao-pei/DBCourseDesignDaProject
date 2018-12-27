@@ -1,0 +1,53 @@
+.sectionTitleButton{
+    background: #e5f3f8;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 15px;
+    padding: 0 10px;
+    cursor: pointer;
+    border: 1px solid #45a9ce6b;
+    color: #45a9ce;
+}
+
+.sectionTitleButton:hover{
+    background: #e1f1f7;
+    box-shadow: 0 0px 0px 1px #f0f0f0 , 0 0px 0px 2px #45a9ce73;
+}
+
+
+.approveButton{
+    color: #16c67c;
+    background: #e5f8f0;
+    border: 1px solid #16c67c6b;
+}
+
+.approveButton:hover{
+    background: #e5f8f0;
+    box-shadow: 0 0px 0px 1px #f0f0f0, 0 0px 0px 2px #16c67c73;
+}
+
+.refuseButton{
+    color: #c61616;
+    background: #f8e5e5;
+    border: 1px solid #c616166b;
+}
+
+.refuseButton:hover{
+    background: #f7e1e1;
+    box-shadow: 0 0px 0px 1px #f0f0f0, 0 0px 0px 2px #ce454573;
+}
+
+
+.hidden{
+    display: none;
+}
+
+.innerTitleButtonLabel{
+    vertical-align: unset;
+    color: inherit;
+}
+
+.innerTitleButtonIcon{
+    color: inherit;
+}

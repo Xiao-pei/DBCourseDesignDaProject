@@ -10,6 +10,6 @@ $(document).ready(function () {
     })
 
     $(".classRoomButton").unbind("click").click(function (){
-        window.open($(this).data("herf"), "_self");
+        window.open($(this).data("href"), "_self");
     })
 })

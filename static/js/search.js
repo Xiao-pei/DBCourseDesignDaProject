@@ -58,15 +58,15 @@ $(document).ready(function () {
 
     $(".locationButton").unbind("click").click(function (e) {
         e.stopPropagation();
-        var herfURL = "https://www.google.com/maps/"
+        var hrefURL = "https://www.google.com/maps/"
         if ($(this).attr('id') == "locate0") {
-            herfURL += "@30.6301606,104.0844545,16z"
+            hrefURL += "@30.6301606,104.0844545,16z"
         } else if ($(this).attr('id') == "locate1") {
-            herfURL += "@30.6399605,104.0712453,17z"
+            hrefURL += "@30.6399605,104.0712453,17z"
         } else {
-            herfURL += "@30.5580034,103.9997657,16z"
+            hrefURL += "@30.5580034,103.9997657,16z"
         }
-        window.open(herfURL, "_blank");
+        window.open(hrefURL, "_blank");
     })
 })
 
