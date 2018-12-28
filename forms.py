@@ -61,7 +61,7 @@ class SearchForm(FlaskForm):
     course8 = BooleanField('8th')
     course9 = BooleanField('9th')
     course10 = BooleanField('10th')
-    region = RadioField('校区', choices=[('望江', 'Wangjiang Campus'), ('华西', 'Huaxi Campus'), ('江安', 'Jiang\'an Campus')])
+    region = RadioField('校区', choices=[('望江', 'Wangjiang Campus'), ('华西', 'Huaxi Campus'), ('Jiang`an Campus', 'Jiang\'an Campus')])
     submit = SubmitField('Submit')
 
 

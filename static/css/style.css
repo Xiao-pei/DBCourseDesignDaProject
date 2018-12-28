@@ -126,6 +126,7 @@ div{
     font-size: 32px;
     margin: 0 0 24px 0;
     text-align: left;
+    white-space: nowrap;
 }
 
 .secondaryTitle{
@@ -137,6 +138,7 @@ div{
     text-align: left;
     font-weight: 500;
     color: #5d5d5d;
+    white-space: nowrap;
 }
 
 .yesButton{

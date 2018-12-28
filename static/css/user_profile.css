@@ -58,6 +58,7 @@ div{
     font-weight: 600;
     height: 42px;
     line-height: 42px;
+    white-space: nowrap;
 }
 
 .innerTitleButtonContainer{
@@ -132,6 +133,7 @@ div{
     color: #2a8cb1;
     border: 1px solid #84c7e2;
     background: #ceefff;
+    text-align: center;
 }
 
 .topBarButton.highlighted{
@@ -188,6 +190,7 @@ div{
     font-weight: 500;
     color: #464646;
     margin-right: 15px;
+    width: -webkit-fit-content;
 }
 
 .titleSectionLabel{
@@ -196,6 +199,7 @@ div{
     -webkit-user-select: none;
     font-size: 20px;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .reservationStatus{

@@ -405,7 +405,7 @@ def message(user_id):
         cursor = g.db.execute('SELECT source_id, resp_text, resp_time, read, id FROM msg WHERE dest_id=?', [user_id])
         result = cursor.fetchall()
         msg_id = request.args.get('msg_id')
-        message_view = None
+        message_view = 1
         messages = []
         for line in result:
             username_cursor = g.db.execute('SELECT username FROM user WHERE id=?', [line[0]])
