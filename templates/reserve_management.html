@@ -16,92 +16,93 @@
 </head>
 
 <body>
-    {% block content %}
-    <div class="overlay">
-        <div class="card transparentCard">
-            <div class="userButtonsContainer">
-                <div class="topButtonContainer">
-                    <div class="topBarButton allReservationButton" data-href="{{ url_for('reserve_all') }}">
-                        All Reservations
+    <form action={{ url_for('reserve_management') }} method="post" novalidate>
+        {% block content %}
+        <div class="overlay">
+            <div class="card transparentCard">
+                <div class="userButtonsContainer">
+                    <div class="topButtonContainer">
+                        <div class="topBarButton allReservationButton" data-href="{{ url_for('reserve_all') }}">
+                            All Reservations
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="innerContainer">
-                <div class="innerTitleContainer">
-                    <span class="innerTitleLabelContainer">
-                        <span class="innerTitleLabel">Manage Reservations</span>
-                    </span>
-
-                </div>
-                {% if empty == 1 %}
-                <p>Nothing here!</p>
-                {% else %}
-                {% for reserve in reserves %}
-                <div class="secondaryContainer">
-
-                    <div class="sectionContainer titleSectionContainer">
-                        <div class="
-                                titleSectionLabel reservationTime">
-                            {{ reserve['apply_time'] }}
-                        </div>
-
-                        <span class="titleSectionLabel reservationStatus">
-                            <span class="sectionTitleButton" data-href="{{url_for('user_profile',user_id=reserve['user_id'])}}">
-                                <i class="material-icons innerTitleButtonIcon newReservationIcon">
-                                    person_outline
-                                </i>
-                                <span class="innerTitleButtonLabel ">User Profile</span>
-                            </span>
-
-                            <span class="sectionTitleButton approveButton">
-                                <i class="material-icons innerTitleButtonIcon newReservationIcon">
-                                    check
-                                </i>
-                                <span class="innerTitleButtonLabel ">Approve</span>
-                            </span>
-
-                            <span class="sectionTitleButton refuseButton">
-                                <i class="material-icons innerTitleButtonIcon newReservationIcon">
-                                    close
-                                </i>
-                                <span class="innerTitleButtonLabel ">Refuse</span>
-                            </span>
-
-
-
+                <div class="innerContainer">
+                    <div class="innerTitleContainer">
+                        <span class="innerTitleLabelContainer">
+                            <span class="innerTitleLabel">Manage Reservations</span>
                         </span>
 
                     </div>
+                    {% if empty == 1 %}
+                    <p>Nothing here!</p>
+                    {% else %}
+                    {% for reserve in reserves %}
+                    <div class="secondaryContainer">
 
-                    <div class="sectionContainer">
-                        <div class="secondaryTitle">Scheduled Time</div>
-                        <span class="contentLabel">{{ reserve['date'] }}, </span>
-                        <span class="contentLabel"> {{ reserve['begin_course'] }} to {{
-                            reserve['end_course'] }} classes </span>
+                        <div class="sectionContainer titleSectionContainer">
+                            <div class="
+                                titleSectionLabel reservationTime">
+                                {{ reserve['apply_time'] }}
+                            </div>
+
+                            <span class="titleSectionLabel reservationStatus">
+                                <span class="sectionTitleButton userProfileButton" data-href="{{url_for('user_profile',user_id=reserve['user_id'])}}">
+                                    <i class="material-icons innerTitleButtonIcon newReservationIcon">
+                                        person_outline
+                                    </i>
+                                    <span class="innerTitleButtonLabel ">User Profile</span>
+                                </span>
+
+                                <span class="sectionTitleButton approveButton">
+                                    <i class="material-icons innerTitleButtonIcon newReservationIcon">
+                                        check
+                                    </i>
+                                    <span class="innerTitleButtonLabel ">Approve</span>
+                                </span>
+
+                                <span class="sectionTitleButton refuseButton">
+                                    <i class="material-icons innerTitleButtonIcon newReservationIcon">
+                                        close
+                                    </i>
+                                    <span class="innerTitleButtonLabel ">Refuse</span>
+                                </span>
+
+
+
+                            </span>
+
+                        </div>
+
+                        <div class="sectionContainer">
+                            <div class="secondaryTitle">Scheduled Time</div>
+                            <span class="contentLabel">{{ reserve['date'] }}, </span>
+                            <span class="contentLabel"> {{ reserve['begin_course'] }} to {{
+                                reserve['end_course'] }} classes </span>
+                        </div>
+                        <div class="sectionContainer">
+                            <div class="secondaryTitle">Classroom</div>
+                            <span class="contentLabel"> {{ reserve['address'] }} </span>
+                        </div>
+                        <div class="sectionContainer">
+                            <div class="secondaryTitle">Reason</div>
+                            <div class="contentLabel">{{ reserve['reason'] }}</div>
+                        </div>
                     </div>
-                    <div class="sectionContainer">
-                        <div class="secondaryTitle">Classroom</div>
-                        <span class="contentLabel"> {{ reserve['address'] }} </span>
-                    </div>
-                    <div class="sectionContainer">
-                        <div class="secondaryTitle">Reason</div>
-                        <div class="contentLabel">{{ reserve['reason'] }}</div>
-                    </div>
-                </div>
 
 
 
 
-                <p><input id="reserve_id" name="reserve_id" type="hidden" value={{ reserve['reserve_id'] }}></p>
-                <p><input class="hidden approve" id="submit" name="submit" type="submit" value="Approve"></p>
-                <p><input class="hidden disapprove" id="submit" name="submit" type="submit" value="Disapprove"></p>
-                </form>
-                {% endfor %}
-                {% endif %}
-                {% endblock %}
-            </div>
-        </div>
+                    <p><input id="reserve_id" name="reserve_id" type="hidden" value={{ reserve['reserve_id'] }}></p>
+                    <p><input class="hidden approve" id="submit" name="submit" type="submit" value="Approve"></p>
+                    <p><input class="hidden disapprove" id="submit" name="submit" type="submit" value="Disapprove"></p>
+    </form>
+    {% endfor %}
+    {% endif %}
+    {% endblock %}
+    </div>
+    </div>
     </div>
 </body>
 
